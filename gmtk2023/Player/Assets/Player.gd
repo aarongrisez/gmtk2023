@@ -72,13 +72,14 @@ func _draw():
 		# print(pen.get_viewport().get_global_canvas_transform().get_origin())
 		var tip_offset = pen.get_rect().size * pen.get_transform().get_scale() * pen.get_global_transform().get_scale() / get_viewport().get_canvas_transform().get_scale()
 		tip_offset += Vector2(-2, 7)
+		tip_offset *= -1
 		var rotation_transform = Transform2D().rotated(pen.get_transform().get_rotation())
 		tip_offset = rotation_transform.basis_xform(tip_offset)
 		var canvas_origin = -get_viewport().get_canvas_transform().get_origin() / get_viewport().get_canvas_transform().get_scale()
 		var pen_origin = pen.get_global_transform().get_origin() / get_viewport().get_canvas_transform().get_scale()
 		var ray_origin = canvas_origin + pen_origin
 		ray_origin -= tip_offset
-		var laser_target_origin = canvas_origin + laser_target.get_global_position() * get_viewport().get_canvas_transform().get_scale()
+		var laser_target_origin = canvas_origin + laser_target.get_global_transform().get_origin() / get_viewport().get_canvas_transform().get_scale()
 		draw_line(to_local(laser_target_origin), to_local(ray_origin), Color(1, 0, 0), 2, true)
 
 func _physics_process(delta):
