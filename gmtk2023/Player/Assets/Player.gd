@@ -14,6 +14,7 @@ var tilemap = null
 
 export var speed = 200
 
+
 export var jump_height = 64.0
 export var jump_time_to_peak = 0.3
 export var jump_time_to_descent = 0.35
@@ -436,22 +437,23 @@ func teleport(to: Vector2):
 
 func is_player():
 	return true
-
-func move(move):
-	_last_movement = move
+	
+func make_idle():
+	state = STATES.Idle
+	movement_dir = 0
 
 # returns true when reaches position
 func move_to_position(target):
 	var y_distance = abs(position.y -  target.y)
 	var direction = position.direction_to(target)
-	direction.y = 0
-	#print("moving in direction ", direction)
+	print(direction)
 	if direction.x > 0:
 		movement_dir = 1
-	else:
+	elif direction.x < 0:
 		movement_dir = -1
-	if abs(direction.x) < 0.5 and y_distance < 10:
+	else:
+		movement_dir = 0
+	if abs(direction.x) < .5 and y_distance < 10:
 		return true
 	else:
-		#velocity = direction
 		return false

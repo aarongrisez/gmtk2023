@@ -71,8 +71,9 @@ func _follow_along_path():
 
 	# Before stopping following path, I make sure the character is not jumping,
 	# otherwise it could stop mid-jump, causing it to fall from a platform
-	if player.position.distance_to(destination.position) < 24 and player.is_on_floor():
+	if player.position.distance_to(destination.position) < 20:
 		_current_path = []
+		player.make_idle()
 		return
 
 	if _should_jump(next_step):

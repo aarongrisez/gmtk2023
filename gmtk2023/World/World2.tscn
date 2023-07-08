@@ -13,9 +13,9 @@
 [ext_resource path="res://Objects/DialogArea/DialogArea.tscn" type="PackedScene" id=16]
 
 [sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 590, 286, 353, 285, 355, 212, 590, 239, 656, 285, 608, 287, 607, 239, 722, 301, 751, 301, 752, 355, 624, 355, 623, 306, 655, 304, 722, 288, 762, 138, 763, 288, 357, 138 )
-polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 6 ), PoolIntArray( 7, 8, 9, 10, 11, 12 ), PoolIntArray( 7, 12, 4, 13 ), PoolIntArray( 6, 14, 15, 13, 4 ), PoolIntArray( 3, 2, 16, 14, 6 ) ]
-outlines = [ PoolVector2Array( 355, 212, 353, 285, 590, 286, 590, 239, 607, 239, 608, 287, 656, 285, 655, 304, 623, 306, 624, 355, 752, 355, 751, 301, 722, 301, 722, 288, 763, 288, 762, 138, 357, 138 ) ]
+vertices = PoolVector2Array( 656, 285, 608, 287, 607, 239, 499, 286, 353, 285, 355, 212, 762, 138, 590, 239, 722, 301, 751, 301, 752, 355, 624, 355, 623, 306, 655, 304, 722, 288, 763, 288, 590, 286, 357, 138 )
+polygons = [ PoolIntArray( 0, 1, 2 ), PoolIntArray( 3, 4, 5, 6, 7 ), PoolIntArray( 8, 9, 10, 11, 12, 13 ), PoolIntArray( 8, 13, 0, 14 ), PoolIntArray( 2, 6, 15, 14, 0 ), PoolIntArray( 7, 16, 3 ), PoolIntArray( 5, 17, 6 ), PoolIntArray( 2, 7, 6 ) ]
+outlines = [ PoolVector2Array( 355, 212, 353, 285, 499, 286, 590, 286, 590, 239, 607, 239, 608, 287, 656, 285, 655, 304, 623, 306, 624, 355, 752, 355, 751, 301, 722, 301, 722, 288, 763, 288, 762, 138, 357, 138 ) ]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 11 )
@@ -55,7 +55,7 @@ __meta__ = {
 }
 
 [node name="Destination" parent="Objects" instance=ExtResource( 16 )]
-position = Vector2( 689, 343 )
+position = Vector2( 416, 216 )
 
 [node name="Sign" type="Sprite" parent="Objects/Destination"]
 position = Vector2( 0, -4 )
@@ -92,7 +92,7 @@ start_closed = true
 script = ExtResource( 6 )
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="Navigation2D"]
-position = Vector2( 1, 1 )
+position = Vector2( 2, 1 )
 navpoly = SubResource( 1 )
 
 [node name="DEBUG_path_line" type="Line2D" parent="Navigation2D"]
@@ -103,7 +103,7 @@ margin_bottom = 5.0
 color = Color( 0, 0.0666667, 0.615686, 1 )
 
 [node name="PathCalculationTimer" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.05
 autostart = true
 
 [connection signal="timeout" from="PathCalculationTimer" to="Navigation2D" method="_on_PathCalculationTimer_timeout"]
