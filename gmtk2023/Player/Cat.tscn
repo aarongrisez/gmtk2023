@@ -6,6 +6,7 @@
 [ext_resource path="res://Player/Assets/cat-neutral-1.png.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=2]
+radius = 4.5523
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -19,6 +20,7 @@ animations = [ {
 scale = Vector2( 0.878677, 0.852947 )
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+collision_layer = 4
 
 [node name="Pen" type="Sprite" parent="KinematicBody2D"]
 position = Vector2( 7.97912, 5.92826 )
