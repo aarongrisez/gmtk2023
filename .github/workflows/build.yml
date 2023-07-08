@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: web
-          path: build/web
+          path: gmtk2023/build/web
       - name: Publish to ItchIO
         run: |
           butler push ./build/web aarongrisez/gmtk2023:web
