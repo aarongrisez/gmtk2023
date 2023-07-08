@@ -36,9 +36,10 @@ position = Vector2( 30.728, 53.9307 )
 shape = SubResource( 5 )
 
 [node name="Pen" type="Sprite" parent="."]
-position = Vector2( 15.933, 10.5517 )
+position = Vector2( 7.96652, 7.03444 )
 scale = Vector2( 0.8125, 0.375 )
 texture = ExtResource( 2 )
+offset = Vector2( -7.00354, -6.25283 )
 script = ExtResource( 3 )
 
 [node name="LaserTargetBoundary" type="StaticBody2D" parent="."]
