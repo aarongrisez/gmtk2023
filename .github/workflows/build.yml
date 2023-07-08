@@ -32,7 +32,7 @@ jobs:
       - name: Web Build
         run: |
           mkdir -v -p build/web
-          cd gmtk2023
+          cd ./gmtk2023
           godot -v --export "HTML5" ./build/web/index.html
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
