@@ -4,7 +4,7 @@
 [ext_resource path="res://Objects/DeathTrigger/DeathTrigger.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/Coin/Coin.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://UI/CoinCounter/CoinCounter.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Player/Cat.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Objects/Teleporter/TeleporterArea.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Objects/Cloud Platform/Cloud Platform.tscn" type="PackedScene" id=7]
 [ext_resource path="res://World/Foreground.tres" type="TileSet" id=8]
@@ -274,13 +274,9 @@ position = Vector2( 560, 280 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="CoinCounter" parent="UI" instance=ExtResource( 5 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 56.0
-margin_top = 16.0
-margin_right = 135.0
-margin_bottom = 49.0
+[node name="Cat" parent="UI" instance=ExtResource( 5 )]
+position = Vector2( 78, 70 )
+scale = Vector2( 8, 8 )
 
 [node name="Congrulations" type="Label" parent="UI"]
 visible = false

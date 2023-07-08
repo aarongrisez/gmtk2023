@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Player/Assets/cat-neutral.png" type="Texture" id=1]
+
+[node name="Cat" type="Node2D"]
+
+[node name="Cat-neutral" type="Sprite" parent="."]
+texture = ExtResource( 1 )
