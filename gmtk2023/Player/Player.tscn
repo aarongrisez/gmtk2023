@@ -104,6 +104,23 @@ drag_margin_right = 0.05
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 3 )
 
+[node name="sensors" type="Node2D" parent="."]
+
+[node name="lower" type="RayCast2D" parent="sensors"]
+position = Vector2( 0, -1 )
+enabled = true
+cast_to = Vector2( 10, 0 )
+
+[node name="upper" type="RayCast2D" parent="sensors"]
+position = Vector2( 0, -60 )
+enabled = true
+cast_to = Vector2( 10, 0 )
+
+[node name="edge" type="RayCast2D" parent="sensors"]
+position = Vector2( 12, 4 )
+enabled = true
+cast_to = Vector2( 0, 10 )
+
 [connection signal="timeout" from="Coyote" to="." method="_on_Coyote_timeout"]
 [connection signal="timeout" from="BufferJump" to="." method="_on_BufferJump_timeout"]
 [connection signal="timeout" from="ForceJump" to="." method="_on_ForceJump_timeout"]

@@ -4,10 +4,16 @@ onready var rot_tween = $RotTween
 onready var stween = $STween
 onready var sprite = $Sprite
 onready var audio = $AudioStreamPlayer
-var pen = null
+onready var sensors = $sensors
+
+
+onready var _blocker_detection_direction = $sensors/lower.cast_to.x
+onready var _edge_detection_position = $sensors/edge.position.x
+
 var tilemap = null
 
 export var speed = 200
+
 
 export var jump_height = 64.0
 export var jump_time_to_peak = 0.3
@@ -24,6 +30,7 @@ onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak) * 
 onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1.0
 onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1.0
 
+var _last_movement = Vector2()
 var DEFAULT_GRAVITY = Vector2(0,1).rotated(deg2rad(0)) #TODO Make Const
 var gravity_influence = {}
 var gravity_normal = DEFAULT_GRAVITY
@@ -50,12 +57,21 @@ enum STATES {Idle, Walk, Jump, Fall, Climb, Glide}
 var state = STATES.Idle
 var last_state = state
 
+func get_jump_max_reach():
+	return 60
+
 func _ready():
 	tilemap = get_tree().get_current_scene().find_node("WorldMap")
-	pen = get_tree().get_current_scene().find_node("Pen")
 
 func _process(_delta):
 	$Label.text = STATES.keys()[state]# + " -- " + str(rotation_degrees)
+	update()
+	if is_facing_edge():
+		print("edge")
+	if is_facing_impossible_blocker():
+		print("impossible")
+	if is_facing_jumpable_blocker():
+		print("jumpable")
 
 func _physics_process(delta):
 	last_state = state
@@ -165,13 +181,13 @@ func _physics_process(delta):
 	#Move and Slide
 	calculate_gravity_normal()
 	var grav_rot = gravity_normal.angle_to(Vector2(0,1))
-	
+	#print("velocity ", velocity)
 	velocity = move_and_slide_with_snap(velocity.rotated(-grav_rot),gravity_normal*snap,-gravity_normal,true,4,deg2rad(80)).rotated(grav_rot)
 	#velocity = move_and_slide_with_snap(velocity,Vector2(0,snap),Vector2.UP)
 
 func get_input(): 
-	movement_dir = Input.get_vector("left","right","null","null").x
-	
+	#movement_dir = Input.get_vector("left","right","null","null").x
+	#print(movement_dir)
 	if Input.is_action_just_pressed("left") || Input.is_action_just_pressed("right") :
 		# -90 bis 90 normal
 		if rotation_degrees > 92 || (rotation_degrees < -92 && rotation_degrees > -200):
@@ -234,6 +250,28 @@ func calculate_wind() -> Vector2:
 	
 	return wind_vec
 
+func _turn_right():
+	sprite.flip_h = false
+	$sensors/lower.cast_to.x = _blocker_detection_direction
+	$sensors/upper.cast_to.x = _blocker_detection_direction
+	$sensors/edge.position.x = _edge_detection_position
+
+func _turn_left():
+	sprite.flip_h = true
+	$sensors/lower.cast_to.x = _blocker_detection_direction * -1
+	$sensors/upper.cast_to.x = _blocker_detection_direction * -1
+	$sensors/edge.position.x = _edge_detection_position * -1
+	$sensors/edge.position.x = _edge_detection_position * -1
+
+func is_facing_jumpable_blocker():
+	return $sensors/lower.is_colliding() and not $sensors/upper.is_colliding()
+
+func is_facing_impossible_blocker():
+	return $sensors/lower.is_colliding() and $sensors/upper.is_colliding()
+
+func is_facing_edge():
+		return not $sensors/edge.is_colliding() and is_on_floor()
+
 func calculate_sprite():
 	sprite.playing = true
 	sprite.speed_scale = 1
@@ -242,9 +280,9 @@ func calculate_sprite():
 	rotation_degrees = n_rot
 	
 	if movement_dir < 0:
-		sprite.flip_h = true
+		_turn_left()
 	elif movement_dir > 0:
-		sprite.flip_h = false
+		_turn_right()
 	
 	if state == STATES.Idle:
 		sprite.animation = "idle"
@@ -368,3 +406,22 @@ func teleport(to: Vector2):
 
 func is_player():
 	return true
+	
+func make_idle():
+	state = STATES.Idle
+	movement_dir = 0
+
+# returns true when reaches position
+func move_to_position(target):
+	var y_distance = abs(position.y -  target.y)
+	var direction = position.direction_to(target)
+	if direction.x > 0:
+		movement_dir = 1
+	elif direction.x < 0:
+		movement_dir = -1
+	else:
+		movement_dir = 0
+	if abs(direction.x) < .5 and y_distance < 10:
+		return true
+	else:
+		return false

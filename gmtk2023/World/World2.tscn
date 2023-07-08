@@ -1,0 +1,112 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://World/Background.tres" type="TileSet" id=1]
+[ext_resource path="res://Objects/DeathTrigger/DeathTrigger.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Player/Cat.tscn" type="PackedScene" id=5]
+[ext_resource path="res://World/AutoNav.gd" type="Script" id=6]
+[ext_resource path="res://Objects/FoodBag/FoodBag.tscn" type="PackedScene" id=7]
+[ext_resource path="res://World/Foreground.tres" type="TileSet" id=8]
+[ext_resource path="res://Objects/FoodDish/FoodDish.tscn" type="PackedScene" id=9]
+[ext_resource path="res://UI/Transition/Transition.tscn" type="PackedScene" id=10]
+[ext_resource path="res://World/World.gd" type="Script" id=11]
+[ext_resource path="res://UI/DialogBox/DialogBox.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Objects/DialogArea/DialogArea.tscn" type="PackedScene" id=16]
+
+[sub_resource type="NavigationPolygon" id=1]
+vertices = PoolVector2Array( 699, 307, 751, 301, 752, 355, 624, 355, 623, 306, 676, 305, 357, 138, 762, 138, 763, 288, 702, 285, 497, 221, 674, 286, 353, 285, 355, 242, 500, 239, 356, 223 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 0, 3, 4, 5 ), PoolIntArray( 6, 7, 8, 9, 10 ), PoolIntArray( 11, 12, 13, 14, 9 ), PoolIntArray( 10, 15, 6 ), PoolIntArray( 14, 10, 9 ), PoolIntArray( 11, 9, 0, 5 ) ]
+outlines = [ PoolVector2Array( 356, 223, 497, 221, 500, 239, 355, 242, 353, 285, 674, 286, 676, 305, 623, 306, 624, 355, 752, 355, 751, 301, 699, 307, 702, 285, 763, 288, 762, 138, 357, 138 ) ]
+
+[node name="World" type="Node2D"]
+script = ExtResource( 11 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.631373, 0.956863, 1, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="BackgroundMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 1179680, 2, 0, 1179681, 2, 0, 1179682, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WorldMap" type="TileMap" parent="."]
+tile_set = ExtResource( 8 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 589847, -1073741822, 0, 589848, -1073741822, 0, 589849, -1073741822, 0, 589850, -1073741822, 0, 589851, -1073741822, 0, 589852, -1073741822, 0, 589853, -1073741822, 0, 589854, -1073741822, 0, 589855, -1073741822, 0, 589856, -1073741822, 0, 589857, -1073741822, 0, 589858, -1073741822, 0, 589859, -1073741822, 0, 589860, -1073741822, 0, 589861, -1073741822, 0, 589862, -1073741822, 0, 589863, -1073741822, 0, 589864, -1073741822, 0, 589865, -1073741822, 0, 589866, -1073741822, 0, 589867, -1073741822, 0, 589868, -1073741822, 0, 589869, -1073741822, 0, 589870, -1073741822, 0, 589871, -1073741822, 0, 589872, -1073741822, 0, 655383, -1073741822, 0, 655408, -1073741822, 0, 720919, -1073741822, 0, 720944, -1073741822, 0, 786455, -1073741822, 0, 786480, -1073741822, 0, 851991, -1073741822, 0, 852016, -1073741822, 0, 917527, -1073741822, 0, 917528, 0, 1, 917529, 0, 1, 917530, 0, 1, 917531, 0, 1, 917532, 0, 1, 917533, 0, 1, 917534, 0, 1, 917552, -1073741822, 0, 983063, -1073741822, 0, 983088, -1073741822, 0, 1048599, -1073741822, 0, 1048624, -1073741822, 0, 1114135, -1073741822, 0, 1114160, -1073741822, 0, 1179671, -1073741822, 0, 1179672, 0, 1, 1179673, 0, 1, 1179674, 0, 1, 1179675, 0, 1, 1179676, 0, 1, 1179677, 0, 1, 1179678, 0, 1, 1179679, 0, 1, 1179680, 0, 1, 1179681, 0, 1, 1179682, 0, 1, 1179683, 0, 1, 1179684, 0, 1, 1179685, 0, 1, 1179686, 0, 1, 1179687, 0, 1, 1179688, 0, 1, 1179689, -1073741822, 0, 1179692, -1073741822, 0, 1179693, 0, 1, 1179694, 0, 1, 1179695, 0, 1, 1179696, -1073741822, 0, 1245223, -1073741822, 0, 1245230, -1073741822, 0, 1310759, -1073741822, 0, 1310766, -1073741822, 0, 1376295, -1073741822, 0, 1376302, -1073741822, 0, 1441831, -1073741822, 0, 1441832, 0, 1, 1441833, 0, 1, 1441834, 0, 1, 1441835, 0, 1, 1441836, 0, 1, 1441837, 0, 1, 1441838, -1073741822, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Objects" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Destination" parent="Objects" instance=ExtResource( 16 )]
+position = Vector2( 420, 87 )
+
+[node name="DeathTrigger" parent="Objects" instance=ExtResource( 2 )]
+position = Vector2( 512, 592 )
+scale = Vector2( 512, 1 )
+
+[node name="FoodBag" parent="Objects" instance=ExtResource( 7 )]
+position = Vector2( 755, 272 )
+
+[node name="FoodDish" parent="Objects" instance=ExtResource( 9 )]
+position = Vector2( 402, 209 )
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 560, 280 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Cat" parent="UI" instance=ExtResource( 5 )]
+position = Vector2( 78, 70 )
+scale = Vector2( 8, 8 )
+
+[node name="Label" parent="UI" instance=ExtResource( 15 )]
+visible = false
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -112.0
+margin_right = -16.0
+margin_bottom = -16.0
+
+[node name="Transition" parent="UI" instance=ExtResource( 10 )]
+visible = false
+start_closed = true
+
+[node name="Navigation2D" type="Navigation2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="Navigation2D"]
+position = Vector2( 2, 1 )
+navpoly = SubResource( 1 )
+
+[node name="DEBUG_path_line" type="Line2D" parent="Navigation2D"]
+
+[node name="DEBUG_next_step_marker" type="ColorRect" parent="Navigation2D"]
+margin_right = 5.0
+margin_bottom = 5.0
+color = Color( 0, 0.0666667, 0.615686, 1 )
+
+[node name="PathCalculationTimer" type="Timer" parent="."]
+wait_time = 0.05
+autostart = true
+
+[connection signal="timeout" from="PathCalculationTimer" to="Navigation2D" method="_on_PathCalculationTimer_timeout"]

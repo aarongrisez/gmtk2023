@@ -28,3 +28,4 @@ func calculate_switch_blocks():
 		#5 to 3
 		for b in tilemap.get_used_cells_by_id(5):
 			tilemap.set_cellv(b,3)
+
