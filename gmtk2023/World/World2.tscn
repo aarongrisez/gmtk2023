@@ -77,10 +77,6 @@ can_gravity = false
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Cat" parent="UI" instance=ExtResource( 5 )]
-position = Vector2( 78, 70 )
-scale = Vector2( 8, 8 )
-
 [node name="Label" parent="UI" instance=ExtResource( 15 )]
 visible = false
 anchor_top = 1.0
@@ -90,6 +86,9 @@ margin_left = 16.0
 margin_top = -112.0
 margin_right = -16.0
 margin_bottom = -16.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Transition" parent="UI" instance=ExtResource( 10 )]
 visible = false
@@ -112,5 +111,9 @@ color = Color( 0, 0.0666667, 0.615686, 1 )
 [node name="PathCalculationTimer" type="Timer" parent="."]
 wait_time = 0.05
 autostart = true
+
+[node name="Cat" parent="." instance=ExtResource( 5 )]
+position = Vector2( 78, 70 )
+scale = Vector2( 2.5, 2.5 )
 
 [connection signal="timeout" from="PathCalculationTimer" to="Navigation2D" method="_on_PathCalculationTimer_timeout"]
