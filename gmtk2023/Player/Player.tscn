@@ -93,7 +93,6 @@ text = "State"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2( 0, -23 )
-current = true
 zoom = Vector2( 0.4, 0.4 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true

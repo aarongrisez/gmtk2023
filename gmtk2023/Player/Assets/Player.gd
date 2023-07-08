@@ -64,7 +64,6 @@ func _ready():
 	tilemap = get_tree().get_current_scene().find_node("WorldMap")
 
 func _process(_delta):
-	get_input()
 	$Label.text = STATES.keys()[state]# + " -- " + str(rotation_degrees)
 	update()
 	if is_facing_edge():
@@ -74,42 +73,12 @@ func _process(_delta):
 	if is_facing_jumpable_blocker():
 		print("jumpable")
 
-func _draw():
-	var pen = get_tree().get_current_scene().find_node("Pen")
-	var laser_target = get_tree().get_current_scene().find_node("LaserTarget")
-	if pen != null:
-		# print(pen.get_rect())
-		# print(pen.get_position())
-		# print(pen.get_global_position())
-		# print(pen.get_global_transform().get_origin())
-		# print(pen.get_canvas_transform().get_origin())
-		# print(pen.get_global_transform_with_canvas().get_origin())
-		# print(pen.get_transform().get_origin())
-		# print(pen.get_viewport_transform().get_origin())
-		# print(pen.get_viewport().get_global_canvas_transform().get_origin())
-		var tip_offset = pen.get_rect().size * pen.get_transform().get_scale() * pen.get_global_transform().get_scale() / get_viewport().get_canvas_transform().get_scale()
-		tip_offset += Vector2(-2, 7)
-		tip_offset *= -1
-		var rotation_transform = Transform2D().rotated(pen.get_transform().get_rotation())
-		tip_offset = rotation_transform.basis_xform(tip_offset)
-		var canvas_origin = -get_viewport().get_canvas_transform().get_origin() / get_viewport().get_canvas_transform().get_scale()
-		var pen_origin = pen.get_global_transform().get_origin() / get_viewport().get_canvas_transform().get_scale()
-		var ray_origin = canvas_origin + pen_origin
-		ray_origin -= tip_offset
-		var direction = rotation_transform.rotated(-3.14 / 8 + 3.14 / 70).basis_xform(Vector2(1, 1))
-		var target = ray_origin + direction * 10000
-		draw_line(to_local(target), to_local(ray_origin), Color(1, 0, 0), 2, true)
-
 func _physics_process(delta):
 	last_state = state
 	state = get_state()
 	calculate_sprite()
 	var snap = 8
 	climb_dir = 0
-	
-	# var space_state = get_world_2d().direct_space_state
-	# var ray_pos = get_position() * 2
-	# var result = space_state.intersect_ray(Vector2(0, 0), Vector2(1024, 1024))
 	
 	#Speed Smoothing
 	var n_speed = speed * movement_dir

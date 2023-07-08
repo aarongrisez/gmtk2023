@@ -274,10 +274,6 @@ position = Vector2( 560, 280 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Cat" parent="UI" instance=ExtResource( 5 )]
-position = Vector2( 78, 70 )
-scale = Vector2( 8, 8 )
-
 [node name="Congrulations" type="Label" parent="UI"]
 visible = false
 anchor_top = 1.0
@@ -316,3 +312,7 @@ start_closed = true
 
 [node name="Trampoline" parent="." instance=ExtResource( 19 )]
 position = Vector2( 584, 152 )
+
+[node name="Cat" parent="." instance=ExtResource( 5 )]
+position = Vector2( 379, 158 )
+scale = Vector2( 2.5, 2.5 )

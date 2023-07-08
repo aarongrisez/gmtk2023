@@ -5,7 +5,8 @@ onready var audio = $AudioStreamPlayer
 var collected = false
 
 func _ready():
-	Global.init_coin()
+	# Global.init_coin()
+	pass
 
 func collect():
 	if collected:
