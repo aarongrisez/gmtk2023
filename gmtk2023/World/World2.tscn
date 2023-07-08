@@ -56,7 +56,8 @@ __meta__ = {
 }
 
 [node name="Destination" parent="Objects" instance=ExtResource( 16 )]
-position = Vector2( 420, 87 )
+position = Vector2( 222, 25 )
+scale = Vector2( 0.926229, 0.0041056 )
 
 [node name="DeathTrigger" parent="Objects" instance=ExtResource( 2 )]
 position = Vector2( 512, 592 )
@@ -70,6 +71,7 @@ position = Vector2( 402, 209 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 560, 280 )
+speed = 95
 can_climb = false
 can_double_jump = false
 can_glide = false
@@ -99,8 +101,10 @@ position = Vector2( 2, 1 )
 navpoly = SubResource( 1 )
 
 [node name="DEBUG_path_line" type="Line2D" parent="Navigation2D"]
+visible = false
 
 [node name="DEBUG_next_step_marker" type="ColorRect" parent="Navigation2D"]
+visible = false
 margin_right = 5.0
 margin_bottom = 5.0
 color = Color( 0, 0.0666667, 0.615686, 1 )
@@ -110,7 +114,7 @@ wait_time = 0.05
 autostart = true
 
 [node name="Cat" parent="." instance=ExtResource( 5 )]
-position = Vector2( 78, 70 )
+position = Vector2( 397, 168 )
 scale = Vector2( 2.5, 2.5 )
 
 [connection signal="timeout" from="PathCalculationTimer" to="Navigation2D" method="_on_PathCalculationTimer_timeout"]
