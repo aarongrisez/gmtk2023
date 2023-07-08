@@ -49,9 +49,6 @@ enum STATES {Idle, Walk, Jump, Fall, Climb, Glide}
 var state = STATES.Idle
 var last_state = state
 
-#func _ready():
-#	check_abilities()
-
 func _ready():
 	tilemap = get_tree().get_current_scene().find_node("WorldMap")
 
@@ -61,11 +58,22 @@ func _process(_delta):
 	update()
 
 func _draw():
-	var pos = get_position()
-	var offset = Vector2(20, 7)
-	var tile_pos = tilemap.map_to_world(tilemap.world_to_map(pos + offset))
-	print(tile_pos)
-	draw_line(offset, -pos, Color(1, 0, 0), 2, true)
+	var pen = get_tree().get_current_scene().find_node("Pen")
+	if pen != null:
+		# print(pen.get_rect())
+		# print(pen.get_position())
+		# print(pen.get_global_position())
+		# print(pen.get_global_transform().get_origin())
+		# print(pen.get_canvas_transform().get_origin())
+		# print(pen.get_global_transform_with_canvas().get_origin())
+		# print(pen.get_transform().get_origin())
+		# print(pen.get_viewport_transform().get_origin())
+		# print(pen.get_viewport().get_global_canvas_transform().get_origin())
+		var origin = -get_viewport().get_canvas_transform().get_origin() / get_viewport().get_canvas_transform().get_scale()
+		var pen_origin = pen.get_global_transform().get_origin() / pen.get_global_transform().get_scale()
+		origin += pen_origin
+		var pos = get_position()
+		draw_line(Vector2(0, 0), to_local(origin), Color(1, 0, 0), 2, true)
 
 func _physics_process(delta):
 	last_state = state
@@ -73,6 +81,10 @@ func _physics_process(delta):
 	calculate_sprite()
 	var snap = 8
 	climb_dir = 0
+	
+	# var space_state = get_world_2d().direct_space_state
+	# var ray_pos = get_position() * 2
+	# var result = space_state.intersect_ray(Vector2(0, 0), Vector2(1024, 1024))
 	
 	#Speed Smoothing
 	var n_speed = speed * movement_dir
