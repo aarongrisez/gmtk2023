@@ -446,7 +446,6 @@ func make_idle():
 func move_to_position(target):
 	var y_distance = abs(position.y -  target.y)
 	var direction = position.direction_to(target)
-	print(direction)
 	if direction.x > 0:
 		movement_dir = 1
 	elif direction.x < 0:
