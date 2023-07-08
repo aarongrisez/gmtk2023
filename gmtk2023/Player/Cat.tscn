@@ -6,7 +6,6 @@
 [ext_resource path="res://Player/Assets/cat-neutral-1.png.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 4.5523
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
