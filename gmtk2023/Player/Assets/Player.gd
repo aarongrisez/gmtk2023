@@ -95,8 +95,9 @@ func _draw():
 		var pen_origin = pen.get_global_transform().get_origin() / get_viewport().get_canvas_transform().get_scale()
 		var ray_origin = canvas_origin + pen_origin
 		ray_origin -= tip_offset
-		#var laser_target_origin = canvas_origin + laser_target.get_global_transform().get_origin() / get_viewport().get_canvas_transform().get_scale()
-		draw_line(Vector2(0,0), to_local(ray_origin), Color(1, 0, 0), 2, true)
+		var direction = rotation_transform.rotated(-3.14 / 8 + 3.14 / 70).basis_xform(Vector2(1, 1))
+		var target = ray_origin + direction * 10000
+		draw_line(to_local(target), to_local(ray_origin), Color(1, 0, 0), 2, true)
 
 func _physics_process(delta):
 	last_state = state
