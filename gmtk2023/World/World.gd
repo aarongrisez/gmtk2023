@@ -2,9 +2,11 @@ extends Node2D
 
 onready var transition = $UI/Transition
 onready var tilemap = $WorldMap
+var win_text = ""
 
 func _ready():
 	Global.text_box = ""
+	win_text = Global.get_win_text()
 	calculate_switch_blocks()
 	var _error = Global.connect("blocks_switched",self,"calculate_switch_blocks")
 	transition.open()
