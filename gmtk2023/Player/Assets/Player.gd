@@ -4,6 +4,7 @@ onready var rot_tween = $RotTween
 onready var stween = $STween
 onready var sprite = $Sprite
 onready var audio = $AudioStreamPlayer
+var tilemap = null
 
 export var speed = 200
 
@@ -51,9 +52,20 @@ var last_state = state
 #func _ready():
 #	check_abilities()
 
+func _ready():
+	tilemap = get_tree().get_current_scene().find_node("WorldMap")
+
 func _process(_delta):
 	get_input()
 	$Label.text = STATES.keys()[state]# + " -- " + str(rotation_degrees)
+	update()
+
+func _draw():
+	var pos = get_position()
+	var offset = Vector2(20, 7)
+	var tile_pos = tilemap.map_to_world(tilemap.world_to_map(pos + offset))
+	print(tile_pos)
+	draw_line(offset, -pos, Color(1, 0, 0), 2, true)
 
 func _physics_process(delta):
 	last_state = state
