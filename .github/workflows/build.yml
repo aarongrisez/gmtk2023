@@ -17,7 +17,7 @@ on:
 jobs:
   export-web:
     name: Web Export
-    runs-on: ubuntu-20.05
+    runs-on: ubuntu-latest
     container:
       image: barichello/godot-ci:3.3.4
     steps:
@@ -31,15 +31,16 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
       - name: Web Build
         run: |
+          cd ./gmtk2023
           mkdir -v -p build/web
           godot -v --export "HTML5" ./build/web/index.html
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: web
-          path: build/web
+          path: gmtk2023/build/web
       - name: Publish to ItchIO
         run: |
-          butler push ./build/web aarongrisez/gmtk2023:web
+          butler push ./gmtk2023/build/web aarongrisez/gmtk2023:web
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
