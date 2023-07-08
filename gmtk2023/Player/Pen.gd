@@ -13,14 +13,16 @@ var movement_speed = 200
 var movement_velocity = Vector2(0, 0)
 
 onready var raycast = get_tree().get_current_scene().find_node("RayCast2D")
+onready var destination = get_tree().get_current_scene().find_node("Destination")
 onready var kinematicBody = get_parent()
 
 func _ready():
 	pass # Replace with function body.
 	
 func _draw():
-	draw_line(to_local(raycast_origin), to_local(raycast_collision), Color(1, 0, 0), 2, true)
-	pass
+	if Input.is_action_pressed('ui_laser'):
+		draw_line(to_local(raycast_origin), to_local(raycast_collision), Color(1, 0, 0), 2, true)
+		destination.position = raycast_collision
 
 func _process(delta):
 	var new_rotation = 0
