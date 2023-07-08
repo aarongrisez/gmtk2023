@@ -1,7 +1,7 @@
 extends Sprite
 
-var MIN_ROTATION = -1.5777
-var MAX_ROTATION = 1.8888
+var MIN_ROTATION = -0.950007
+var MAX_ROTATION = 0.965705
 var speed = 250
 export var turning = 1.0
 
@@ -14,7 +14,8 @@ var movement_velocity = Vector2(0, 0)
 
 onready var raycast = get_tree().get_current_scene().find_node("RayCast2D")
 onready var destination = get_tree().get_current_scene().find_node("Destination")
-onready var kinematicBody = get_parent()
+onready var catKinematicBody = get_tree().get_current_scene().find_node("Cat").find_node("KinematicBody2D")
+# onready var penKinematicBody = get_parent()
 
 func _ready():
 	pass # Replace with function body.
@@ -25,17 +26,15 @@ func _draw():
 		destination.position = raycast_collision
 
 func _process(delta):
-	var new_rotation = 0
-	var current_rotation = get_rotation()
+	var current_rotation = catKinematicBody.rotation
 	if Input.is_action_pressed('ui_left'):
 		if current_rotation < MAX_ROTATION:
-			rotation += turning * delta
+			catKinematicBody.rotation += turning * delta
 	if Input.is_action_pressed('ui_right'):
 		if current_rotation > MIN_ROTATION:
-			rotation -= turning * delta
-
-	rotate(new_rotation)
+			catKinematicBody.rotation -= turning * delta
 	
+	print_val_every(60, "current_rotation", current_rotation)
 	movement_dir = Input.get_vector("left","right","up","down")
 	
 var inc = 0
@@ -65,7 +64,7 @@ func _physics_process(delta):
 	var n_speed = movement_speed * movement_dir
 	movement_velocity.x = calc_velocity_dir(n_speed.x, movement_velocity.x)
 	movement_velocity.y = calc_velocity_dir(n_speed.y, movement_velocity.y)
-	kinematicBody.move_and_slide(movement_velocity)
+	catKinematicBody.move_and_slide(movement_velocity)
 
 	raycast.force_raycast_update()
 	raycast_origin = raycast.get_global_position()

@@ -1,12 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Player/Assets/cat-neutral-2.png.png" type="Texture" id=1]
 [ext_resource path="res://Player/Assets/pen.png" type="Texture" id=2]
 [ext_resource path="res://Player/Pen.gd" type="Script" id=3]
 [ext_resource path="res://Player/Assets/cat-neutral-1.png.png" type="Texture" id=4]
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 4.5523
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -22,6 +19,20 @@ scale = Vector2( 0.878677, 0.852947 )
 [node name="KinematicBody2D" type="KinematicBody2D" parent="."]
 collision_layer = 4
 
+[node name="Cat-neutral" type="AnimatedSprite" parent="KinematicBody2D"]
+frames = SubResource( 1 )
+frame = 1
+playing = true
+
+[node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
+offset = Vector2( 100, 50 )
+current = true
+zoom = Vector2( 0.25, 0.25 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="KinematicBody2D"]
+position = Vector2( 7.96652, 5.86203 )
+polygon = PoolVector2Array( -1.5, 0, 2, 0, 10, 9, 6, 9 )
+
 [node name="Pen" type="Sprite" parent="KinematicBody2D"]
 position = Vector2( 7.97912, 5.92826 )
 rotation = 0.422247
@@ -34,17 +45,3 @@ script = ExtResource( 3 )
 position = Vector2( 11.7562, 12.3512 )
 enabled = true
 cast_to = Vector2( 5470, 5643.6 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
-position = Vector2( 12.5188, 10.5517 )
-shape = SubResource( 2 )
-
-[node name="Cat-neutral" type="AnimatedSprite" parent="KinematicBody2D"]
-frames = SubResource( 1 )
-frame = 1
-playing = true
-
-[node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
-offset = Vector2( 100, 50 )
-current = true
-zoom = Vector2( 0.25, 0.25 )
