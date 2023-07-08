@@ -15,7 +15,6 @@ var movement_velocity = Vector2(0, 0)
 onready var raycast = get_tree().get_current_scene().find_node("RayCast2D")
 onready var destination = get_tree().get_current_scene().find_node("Destination")
 onready var catKinematicBody = get_tree().get_current_scene().find_node("Cat").find_node("KinematicBody2D")
-# onready var penKinematicBody = get_parent()
 
 func _ready():
 	pass # Replace with function body.
@@ -34,7 +33,6 @@ func _process(delta):
 		if current_rotation > MIN_ROTATION:
 			catKinematicBody.rotation -= turning * delta
 	
-	print_val_every(60, "current_rotation", current_rotation)
 	movement_dir = Input.get_vector("left","right","up","down")
 	
 var inc = 0
@@ -73,10 +71,6 @@ func _physics_process(delta):
 		raycast_collision = raycast.get_collision_point()
 	else:
 		raycast_collision = get_global_transform().xform(raycast.get_cast_to())
-
-	print_val_every(nframes, "raycast_origin", raycast_origin)
-	print_val_every(nframes, "raycast_collision", raycast_collision)
-	print_every(nframes, "")
 	
 	inc += 1
 	update()
