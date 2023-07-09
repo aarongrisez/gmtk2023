@@ -11,10 +11,9 @@ func _process(_delta):
 func update_text():
 	text = str(Global.current_food) + " of " + str(Global.max_food) + " collected"
 	
-	if Global.current_food == Global.max_food:
+	if Global.collected_food == Global.max_dish:
 		if completed:
 			return
 		completed = true
 		$CPUParticles2D.emitting = true
-		$AudioStreamPlayer.play(0)
 		#Global.text_box = "Congrulations"

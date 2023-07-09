@@ -37,7 +37,6 @@ var WIN_TEXTS = [
 	"FOODFOODFOODFOODFOODFOOD",
 	"c r o n c h i n g",
 	"c r o n c h i n g  INTENSIFIES",
-	"Mrs. Meows appreciates you for all you do. /s",
 	"Milo needs to replenish all the calories spent sleeping.",
 	"The first kibble hadn't even hit the bowl before Oliver came running",
 	"How does Oreo know when it's an hour before my alarm is set to wake me up?",
