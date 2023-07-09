@@ -89,6 +89,9 @@ func render_raycast(raycast_render_info):
 		collision_hyp = -2 / cos(collision_angle)
 		polygon.push_back(to_local(terminus + collision_normal.rotated(3.14 / 2) * collision_hyp / 2))
 		polygon.push_back(to_local(terminus + collision_normal.rotated(-3.14 / 2) * collision_hyp / 2))
+	elif not has_prev:
+		polygon.push_back(to_local(terminus) + Vector2(1, 0))
+		polygon.push_back(to_local(terminus) + Vector2(-1, 0))
 	else:
 		polygon.push_back(to_local(terminus + Vector2(-1, 0)))
 		polygon.push_back(to_local(terminus + Vector2(1, 0)))
@@ -174,13 +177,10 @@ func _physics_process(delta):
 	var gas_up = Input.get_action_strength("up")
 	var gas_down = Input.get_action_strength("down")
 	movement_dir = Vector2(gas_right - gas_left, gas_down - gas_up)
-	# Global.print_val_every(60, "movement_dir", movement_dir)
 
 	var n_speed = movement_speed * movement_dir
-	# Global.print_val_every(60, "n_speed", n_speed)
 	movement_velocity.x = calc_velocity_dir(n_speed.x, movement_velocity.x)
 	movement_velocity.y = calc_velocity_dir(n_speed.y, movement_velocity.y)
-	# Global.print_val_every(60, "movement_velocity", movement_velocity)
 	catKinematicBody.move_and_slide(movement_velocity)
 	
 	raycast_info.deactivate_children()
@@ -192,6 +192,8 @@ func _physics_process(delta):
 	if raycast.is_colliding():
 		raycast_info.terminus = raycast.get_collision_point()
 		raycast_info.collision_normal = raycast.get_collision_normal()
+		Global.print_val_every(60, "raycast collision point", raycast_info.terminus)
+		Global.print_val_every(60, "raycast collision normal", raycast_info.collision_normal)
 		
 		if laser_on:
 			destination.position = raycast_info.terminus
@@ -201,6 +203,7 @@ func _physics_process(delta):
 			process_child_raycast(raycast2_info, raycast_info)
 	else:
 		raycast_info.terminus = get_global_transform().xform(raycast.get_cast_to())
+		Global.print_val_every(60, "raycast collision point", raycast_info.terminus)
 	
 	update()
 
