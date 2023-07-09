@@ -149,7 +149,11 @@ func _physics_process(delta):
 			catKinematicBody.rotation -= turning * delta
 
 	movement_dir = Input.get_vector("left","right","up","down")
+	var gas_left_raw = Input.get_action_raw_strength("left")
+	var gas_left = Input.get_action_strength("left")
 	Global.print_val_every(60, "movement_dir", movement_dir)
+	Global.print_val_every(60, "gas_left", gas_left)
+	Global.print_val_every(60, "gas_left_raw", gas_left_raw)
 	var n_speed = movement_speed * movement_dir
 	movement_velocity.x = calc_velocity_dir(n_speed.x, movement_velocity.x)
 	movement_velocity.y = calc_velocity_dir(n_speed.y, movement_velocity.y)
