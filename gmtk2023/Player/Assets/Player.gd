@@ -99,14 +99,8 @@ func _physics_process(delta):
 	if is_on_floor() || (state == STATES.Climb):
 		on_ground = true
 		jump_left = jump_count
-	else:
-		if $Coyote.is_stopped() && on_ground == true:
-			$Coyote.start()
-		
-		if last_state == STATES.Climb && state != STATES.Climb && velocity.y < 0:
-			jump = true
-	
-	if jump  || (buffer_jump && (on_ground || (jump_left > 0 && can_double_jump))):
+
+	if jump and is_on_floor():
 		jump = false
 		buffer_jump = false
 		on_ground = false
@@ -386,17 +380,6 @@ func check_abilities():
 	can_double_jump = Global.has_ability("double_jump")
 	can_glide = Global.has_ability("glide")
 	can_gravity = Global.has_ability("gravity")
-
-func _on_Coyote_timeout():
-	on_ground = is_on_floor()
-	if !on_ground && jump_left == jump_count:
-		jump_left = jump_count - 1
-
-func _on_BufferJump_timeout():
-	buffer_jump = false
-
-func _on_ForceJump_timeout():
-	forced_jump = false
 
 func death():
 	Global.restart_game()
