@@ -7,9 +7,11 @@ export var turning = 1.0
 
 var raycast_origin = Vector2(0, 0)
 var raycast_collision = Vector2(0, 0)
+var raycast_collision_normal = Vector2(0, 0)
 var raycast_mirrored = false
 var raycast2_origin = Vector2(0, 0)
 var raycast2_collision = Vector2(0, 0)
+var raycast2_normal = Vector2(0, 0)
 
 var movement_dir = Vector2(0, 0)
 var movement_speed = 200
@@ -25,23 +27,37 @@ func _ready():
 	
 func _draw():
 	if Input.is_action_pressed('ui_laser'):
-		draw_line(to_local(raycast_origin), to_local(raycast_collision), Color(1, 0, 0), 2, true)
-		if raycast2.is_enabled():
-			draw_line(to_local(raycast2_origin), to_local(raycast2_collision), Color(1, 0, 0), 2, true)
-			# destination.position = raycast2_collision
+		var polygon = PoolVector2Array()
+		var raycast_direction = (raycast_collision - raycast_origin).normalized()
+		
+		polygon.push_back(to_local(raycast_origin) + Vector2(-1, 0))
+		polygon.push_back(to_local(raycast_origin) + Vector2(1, -0.5))
+		
+		if raycast.is_colliding():
+			var raycast_collision_angle = acos(raycast_direction.dot(raycast_collision_normal))
+			var raycast_collision_hyp = -2 / cos(raycast_collision_angle)
+			print(raycast_collision_hyp)
+			
+			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(3.14 / 2) * raycast_collision_hyp / 2 / get_scale()))
+			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(-3.14 / 2) * raycast_collision_hyp / 2 / get_scale()))
+			destination.position = raycast_collision
 		else:
+			polygon.push_back(to_local(raycast_collision) + Vector2(1, 0))
+			polygon.push_back(to_local(raycast_collision) + Vector2(-1, 0))
+		draw_colored_polygon(polygon, Color(1, 0, 0))
+		if raycast2.is_enabled():
+			polygon = PoolVector2Array()
+			polygon.push_back(to_local(raycast2_origin + Vector2(-1, 0) / get_scale()))
+			polygon.push_back(to_local(raycast2_origin + Vector2(1, 0) / get_scale()))
+			polygon.push_back(to_local(raycast2_collision + Vector2(1, 0) / get_scale()))
+			polygon.push_back(to_local(raycast2_collision + Vector2(-1, 0) / get_scale()))
+			draw_colored_polygon(polygon, Color(1, 0, 0))
+			# destination.position = raycast2_collision
 			destination.position = raycast_collision
 
 func _process(delta):
-	var current_rotation = catKinematicBody.rotation
-	if Input.is_action_pressed('ui_left'):
-		if current_rotation < MAX_ROTATION:
-			catKinematicBody.rotation += turning * delta
-	if Input.is_action_pressed('ui_right'):
-		if current_rotation > MIN_ROTATION:
-			catKinematicBody.rotation -= turning * delta
-
 	movement_dir = Input.get_vector("left","right","up","down")
+	update()
 	
 var inc = 0
 
@@ -67,6 +83,14 @@ func print_val_every(nframes, name, val):
 func _physics_process(delta):	
 	var nframes = 60
 	
+	var current_rotation = catKinematicBody.rotation
+	if Input.is_action_pressed('ui_left'):
+		if current_rotation < MAX_ROTATION:
+			catKinematicBody.rotation += turning * delta
+	if Input.is_action_pressed('ui_right'):
+		if current_rotation > MIN_ROTATION:
+			catKinematicBody.rotation -= turning * delta
+	
 	var n_speed = movement_speed * movement_dir
 	movement_velocity.x = calc_velocity_dir(n_speed.x, movement_velocity.x)
 	movement_velocity.y = calc_velocity_dir(n_speed.y, movement_velocity.y)
@@ -77,27 +101,23 @@ func _physics_process(delta):
 	
 	if raycast.is_colliding():
 		raycast_collision = raycast.get_collision_point()
+		raycast_collision_normal = raycast.get_collision_normal()
+
 		var collider = raycast.get_collider()
 		if collider.name == "Mirror":
 			raycast2.set_enabled(true)
 			var raycast_direction = (raycast_collision - raycast_origin).normalized()
-			var normal = raycast.get_collision_normal()
-			var raycast2_direction = raycast_direction - 2 * (raycast_direction.dot(normal)) * normal
-			raycast2_origin = raycast_collision - Vector2(1, 1)
-			print_val_every(60, "raycast2_origin", raycast2_origin)
-			print_val_every(60, "raycast2_direction", raycast2_direction)
+			var raycast2_direction = raycast_direction - 2 * (
+				raycast_direction.dot(raycast_collision_normal)) * raycast_collision_normal
+			raycast2_origin = raycast_collision
 			var raycast2_pos = raycast2.get_position()
-			print_val_every(60, "raycast2_pos", raycast2_pos)
-			raycast2.set_global_position(raycast2_origin)
-			# raycast2.set_position(raycast2_origin)
+			raycast2.set_global_position(raycast2_origin - Vector2(0.5, 0.5))
 			raycast2.set_cast_to(raycast2_direction * 10000 + raycast2_pos)
 			raycast2.force_raycast_update()
-			raycast2_origin = raycast2.get_global_position()
 			if raycast2.is_colliding():
 				raycast2_collision = raycast2.get_collision_point()
 			else:
 				raycast2_collision = raycast2_origin + raycast2_direction * 10000
-			print_val_every(60, "raycast2_collision", raycast2_collision)
 		else:
 			raycast2.set_enabled(false)
 	else:

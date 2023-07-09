@@ -107,7 +107,7 @@ stream = SubResource( 3 )
 [node name="sensors" type="Node2D" parent="."]
 
 [node name="lower" type="RayCast2D" parent="sensors"]
-position = Vector2( 0, -1 )
+position = Vector2( 0, 4 )
 enabled = true
 cast_to = Vector2( 10, 0 )
 

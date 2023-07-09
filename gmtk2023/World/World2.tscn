@@ -15,9 +15,9 @@
 [ext_resource path="res://Objects/DialogArea/DialogArea.tscn" type="PackedScene" id=16]
 
 [sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 217, 286, 233, 189, 284, 238, 674, 286, 530, 242, 511, 223, 289, 222, 299, 127, 918, 123, 702, 285, 699, 307, 751, 301, 752, 355, 624, 355, 623, 306, 676, 305, 919, 288 )
-polygons = [ PoolIntArray( 0, 1, 2 ), PoolIntArray( 3, 0, 2, 4 ), PoolIntArray( 5, 6, 7, 8 ), PoolIntArray( 3, 4, 5, 8, 9 ), PoolIntArray( 10, 11, 12, 13 ), PoolIntArray( 10, 13, 14, 15 ), PoolIntArray( 8, 16, 9 ), PoolIntArray( 3, 9, 10, 15 ) ]
-outlines = [ PoolVector2Array( 289, 222, 511, 223, 530, 242, 284, 238, 233, 189, 217, 286, 674, 286, 676, 305, 623, 306, 624, 355, 752, 355, 751, 301, 699, 307, 702, 285, 919, 288, 918, 123, 299, 127 ) ]
+vertices = PoolVector2Array( 217, 286, 233, 189, 284, 238, 620, 286, 530, 242, 632, 275, 511, 223, 289, 222, 299, 127, 918, 123, 919, 288, 702, 285, 661, 275, 699, 307, 751, 301, 752, 355, 624, 355, 623, 306, 676, 305, 674, 286, 669, 286 )
+polygons = [ PoolIntArray( 0, 1, 2 ), PoolIntArray( 3, 0, 2, 4, 5 ), PoolIntArray( 6, 7, 8, 9 ), PoolIntArray( 4, 6, 9, 10, 11, 12 ), PoolIntArray( 13, 14, 15, 16 ), PoolIntArray( 13, 16, 17, 18 ), PoolIntArray( 11, 13, 18, 19 ), PoolIntArray( 19, 20, 12, 11 ), PoolIntArray( 4, 12, 5 ) ]
+outlines = [ PoolVector2Array( 289, 222, 511, 223, 530, 242, 284, 238, 233, 189, 217, 286, 620, 286, 632, 275, 661, 275, 669, 286, 674, 286, 676, 305, 623, 306, 624, 355, 752, 355, 751, 301, 699, 307, 702, 285, 919, 288, 918, 123, 299, 127 ) ]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 11 )
@@ -71,7 +71,7 @@ position = Vector2( 755, 272 )
 position = Vector2( 402, 209 )
 
 [node name="Mirror" parent="Objects" instance=ExtResource( 3 )]
-position = Vector2( 204, 284 )
+position = Vector2( 648, 284 )
 scale = Vector2( 2, 2 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
