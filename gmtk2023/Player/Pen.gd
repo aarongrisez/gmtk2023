@@ -4,6 +4,8 @@ var MIN_ROTATION = -0.950007
 var MAX_ROTATION = 0.965705
 var speed = 250
 export var turning = 1.0
+var laser_on = false
+var laser_strength = 0
 
 var raycast_origin = Vector2(0, 0)
 var raycast_collision = Vector2(0, 0)
@@ -26,7 +28,7 @@ func _ready():
 	pass # Replace with function body.
 	
 func _draw():
-	if Input.is_action_pressed('ui_laser'):
+	if laser_on:
 		var polygon = PoolVector2Array()
 		var raycast_direction = (raycast_collision - raycast_origin).normalized()
 		
@@ -36,15 +38,14 @@ func _draw():
 		if raycast.is_colliding():
 			var raycast_collision_angle = acos(raycast_direction.dot(raycast_collision_normal))
 			var raycast_collision_hyp = -2 / cos(raycast_collision_angle)
-			print(raycast_collision_hyp)
-			
 			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(3.14 / 2) * raycast_collision_hyp / 2 / get_scale()))
 			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(-3.14 / 2) * raycast_collision_hyp / 2 / get_scale()))
-			destination.position = raycast_collision
 		else:
 			polygon.push_back(to_local(raycast_collision) + Vector2(1, 0))
 			polygon.push_back(to_local(raycast_collision) + Vector2(-1, 0))
+
 		draw_colored_polygon(polygon, Color(1, 0, 0))
+
 		if raycast2.is_enabled():
 			polygon = PoolVector2Array()
 			polygon.push_back(to_local(raycast2_origin + Vector2(-1, 0) / get_scale()))
@@ -52,12 +53,9 @@ func _draw():
 			polygon.push_back(to_local(raycast2_collision + Vector2(1, 0) / get_scale()))
 			polygon.push_back(to_local(raycast2_collision + Vector2(-1, 0) / get_scale()))
 			draw_colored_polygon(polygon, Color(1, 0, 0))
-			# destination.position = raycast2_collision
-			destination.position = raycast_collision
 
 func _process(delta):
-	movement_dir = Input.get_vector("left","right","up","down")
-	update()
+	pass
 	
 var inc = 0
 
@@ -84,12 +82,20 @@ func _physics_process(delta):
 	var nframes = 60
 	
 	var current_rotation = catKinematicBody.rotation
+	if Input.is_action_pressed('ui_laser'):
+		laser_on = true
+		laser_strength = 1
+		destination.position = raycast_collision
+	if Input.is_action_just_released("ui_laser"):
+		laser_on = false
 	if Input.is_action_pressed('ui_left'):
 		if current_rotation < MAX_ROTATION:
 			catKinematicBody.rotation += turning * delta
 	if Input.is_action_pressed('ui_right'):
 		if current_rotation > MIN_ROTATION:
 			catKinematicBody.rotation -= turning * delta
+
+	movement_dir = Input.get_vector("left","right","up","down")
 	
 	var n_speed = movement_speed * movement_dir
 	movement_velocity.x = calc_velocity_dir(n_speed.x, movement_velocity.x)

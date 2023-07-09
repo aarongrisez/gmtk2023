@@ -1,0 +1,164 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://World/Background.tres" type="TileSet" id=1]
+[ext_resource path="res://Objects/DeathTrigger/DeathTrigger.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Objects/MovingPlatform/MovingPlatform.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Player/Cat.tscn" type="PackedScene" id=5]
+[ext_resource path="res://World/AutoNav.gd" type="Script" id=6]
+[ext_resource path="res://Objects/FoodBag/FoodBag.tscn" type="PackedScene" id=7]
+[ext_resource path="res://World/Foreground.tres" type="TileSet" id=8]
+[ext_resource path="res://Objects/FoodDish/FoodDish.tscn" type="PackedScene" id=9]
+[ext_resource path="res://UI/Transition/Transition.tscn" type="PackedScene" id=10]
+[ext_resource path="res://World/World.gd" type="Script" id=11]
+[ext_resource path="res://UI/DialogBox/DialogBox.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Objects/DialogArea/DialogArea.tscn" type="PackedScene" id=16]
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 473, 290 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "world-2-platform-1"
+length = 10.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 2, 5, 7, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 473, 290 ), Vector2( 700, 290 ), Vector2( 700, 290 ), Vector2( 473, 290 ) ]
+}
+
+[sub_resource type="NavigationPolygon" id=3]
+vertices = PoolVector2Array( 819.115, 310.436, 819.115, 453.559, 240.74, 450.535, 256.723, 321.523, 434.531, 308.42, 727.215, 308.42, 435.53, 288.262, 252.727, 284.23, 248.731, 126.996, 816.119, 142.115, 727.215, 284.23, 817.117, 287.254 )
+polygons = [ PoolIntArray( 0, 1, 2, 3, 4, 5 ), PoolIntArray( 6, 7, 8, 9, 10 ), PoolIntArray( 5, 4, 6, 10 ), PoolIntArray( 10, 9, 11 ) ]
+outlines = [ PoolVector2Array( 248.731, 126.996, 252.727, 284.23, 435.53, 288.262, 434.531, 308.42, 256.723, 321.523, 240.74, 450.535, 819.115, 453.559, 819.115, 310.436, 727.215, 308.42, 727.215, 284.23, 817.117, 287.254, 816.119, 142.115 ) ]
+
+[node name="World" type="Node2D"]
+script = ExtResource( 11 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.631373, 0.956863, 1, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="BackgroundMap" type="TileMap" parent="."]
+visible = false
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 1179680, 2, 0, 1179681, 2, 0, 1179682, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WorldMap" type="TileMap" parent="."]
+tile_set = ExtResource( 8 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 1179669, 0, 1, 1179670, 0, 1, 1179671, 0, 1, 1179672, 0, 1, 1179673, 0, 1, 1179674, 0, 1, 1179694, 0, 1, 1179695, 0, 1, 1179696, 0, 1, 1179697, 0, 1, 1179698, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Objects" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="MovingPlatform" parent="Objects" instance=ExtResource( 3 )]
+position = Vector2( 473, 290 )
+currentAnimation = "world-2-platform-1"
+
+[node name="AnimationPlayer" parent="Objects/MovingPlatform" index="2"]
+anims/RESET = SubResource( 1 )
+anims/world-2-platform-1 = SubResource( 2 )
+
+[node name="Destination" parent="Objects" instance=ExtResource( 16 )]
+position = Vector2( 545, -11 )
+
+[node name="DeathTrigger" parent="Objects" instance=ExtResource( 2 )]
+position = Vector2( 512, 592 )
+scale = Vector2( 512, 1 )
+
+[node name="FoodBag" parent="Objects" instance=ExtResource( 7 )]
+position = Vector2( 795, 271 )
+
+[node name="FoodDish" parent="Objects" instance=ExtResource( 9 )]
+position = Vector2( 388, 275 )
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 420, 281 )
+speed = 95
+can_climb = false
+can_double_jump = false
+can_glide = false
+can_gravity = false
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Label" parent="UI" instance=ExtResource( 15 )]
+visible = false
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -112.0
+margin_right = -16.0
+margin_bottom = -16.0
+
+[node name="Transition" parent="UI" instance=ExtResource( 10 )]
+visible = false
+start_closed = true
+
+[node name="Navigation2D" type="Navigation2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="Navigation2D"]
+position = Vector2( 2, 1 )
+scale = Vector2( 1.00108, 0.992154 )
+navpoly = SubResource( 3 )
+
+[node name="DEBUG_path_line" type="Line2D" parent="Navigation2D"]
+visible = false
+
+[node name="DEBUG_next_step_marker" type="ColorRect" parent="Navigation2D"]
+visible = false
+margin_right = 5.0
+margin_bottom = 5.0
+color = Color( 0, 0.0666667, 0.615686, 1 )
+
+[node name="PathCalculationTimer" type="Timer" parent="."]
+wait_time = 0.05
+autostart = true
+
+[node name="Cat" parent="." instance=ExtResource( 5 )]
+position = Vector2( 324, 187 )
+scale = Vector2( 2.5, 2.5 )
+
+[connection signal="timeout" from="PathCalculationTimer" to="Navigation2D" method="_on_PathCalculationTimer_timeout"]
+
+[editable path="Objects/MovingPlatform"]
