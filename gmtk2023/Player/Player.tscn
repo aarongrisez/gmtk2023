@@ -87,7 +87,6 @@ margin_right = -484.0
 margin_bottom = -49.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2( 0, -23 )
 zoom = Vector2( 0.4, 0.4 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true

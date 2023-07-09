@@ -2,16 +2,16 @@
 
 
 ## Resources Used
-[platformer-toolkit](https://github.com/finn753/platformer-toolkit)
-[Cat Sprites](https://godotmarketplace.com/shop/16x16-32x32-mixed-random-cat-related-sprites/)
+- [platformer-toolkit](https://github.com/finn753/platformer-toolkit)
+- [Cat Sprites](https://godotmarketplace.com/shop/16x16-32x32-mixed-random-cat-related-sprites/)
 
 
 ## Resource Videos:
-[platformer-toolkit Video, updated](https://www.youtube.com/watch?v=cnJaiOHai6Q)
-[platformer-toolkit Video, original](https://www.youtube.com/watch?v=wXCLaRMhl9c)
+- [platformer-toolkit Video, updated](https://www.youtube.com/watch?v=cnJaiOHai6Q)
+- [platformer-toolkit Video, original](https://www.youtube.com/watch?v=wXCLaRMhl9c)
 
 ## Fonts used:
-[ codeman38 | cody@zone38.net | http://www.zone38.net/ ]
+- [ codeman38 | cody@zone38.net | http://www.zone38.net/ ]
 
 ## Copyrights
 | Component/Origin | Copyright |
