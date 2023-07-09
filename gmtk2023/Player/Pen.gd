@@ -86,27 +86,6 @@ func _draw():
 
 func _process(delta):
 	pass
-	
-var inc = 0
-
-func print_once(string):
-	if inc == 0:
-		print(string)
-		
-func print_every(nframes, string):
-	if inc % nframes == 0:
-		print(string)
-
-func print_val(name, val):
-	print("{name}: {val}".format({"name": name, "val": val}))
-
-func print_val_once(name, val):
-	if inc == 0:
-		print_val(name, val)
-
-func print_val_every(nframes, name, val):
-	if inc % nframes == 0:
-		print_val(name, val)
 
 func _physics_process(delta):	
 	var nframes = 60
@@ -126,10 +105,11 @@ func _physics_process(delta):
 			catKinematicBody.rotation -= turning * delta
 
 	movement_dir = Input.get_vector("left","right","up","down")
-	
+	Global.print_val_every(60, "movement_dir", movement_dir)
 	var n_speed = movement_speed * movement_dir
 	movement_velocity.x = calc_velocity_dir(n_speed.x, movement_velocity.x)
 	movement_velocity.y = calc_velocity_dir(n_speed.y, movement_velocity.y)
+	Global.print_val_every(60, "movement_velocity", movement_velocity)
 	catKinematicBody.move_and_slide(movement_velocity)
 
 	raycast.force_raycast_update()
@@ -163,7 +143,6 @@ func _physics_process(delta):
 		raycast2.set_enabled(false)
 		raycast_info.terminus = get_global_transform().xform(raycast.get_cast_to())
 	
-	inc += 1
 	update()
 
 func calc_velocity_dir(n_speed, velocity_dir):

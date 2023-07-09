@@ -2,6 +2,30 @@ extends Node
 
 signal blocks_switched
 
+var inc = 0
+func print_once(string):
+	if inc == 0:
+		print(string)
+		
+func print_every(nframes, string):
+	if inc % nframes == 0:
+		print(string)
+
+func print_val(name, val):
+	print("{name}: {val}".format({"name": name, "val": val}))
+
+func print_val_once(name, val):
+	if inc == 0:
+		print_val(name, val)
+
+func print_val_every(nframes, name, val):
+	if inc % nframes == 0:
+		print_val(name, val)
+
+func _physics_process(_delta):
+	inc += 1
+
+
 var max_food = 0
 var max_dish = 0
 var current_food = 0
