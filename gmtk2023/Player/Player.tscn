@@ -91,6 +91,7 @@ drag_margin_right = 0.05
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 3 )
+volume_db = -9.905
 
 [node name="sensors" type="Node2D" parent="."]
 
