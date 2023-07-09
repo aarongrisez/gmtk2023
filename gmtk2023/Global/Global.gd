@@ -92,8 +92,7 @@ func switch_blocks():
 	emit_signal("blocks_switched")
 
 func restart_game():
-	max_food = 0
-	current_food = 0
+	reset_counters()
 	block_switch = true
 	text_box = ""
 	
