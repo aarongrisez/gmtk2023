@@ -1,0 +1,155 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://World/Background.tres" type="TileSet" id=1]
+[ext_resource path="res://Objects/Computer/Computer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Objects/DialogArea/DialogArea.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Objects/DeathTrigger/DeathTrigger.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Player/Cat.tscn" type="PackedScene" id=6]
+[ext_resource path="res://UI/Transition/Transition.tscn" type="PackedScene" id=7]
+[ext_resource path="res://UI/DialogBox/DialogBox.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Objects/FoodBag/FoodBag.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Objects/FoodDish/FoodDish.tscn" type="PackedScene" id=10]
+[ext_resource path="res://World/Foreground.tres" type="TileSet" id=11]
+[ext_resource path="res://World/AutoNav.gd" type="Script" id=12]
+[ext_resource path="res://World/World.gd" type="Script" id=13]
+[ext_resource path="res://Objects/MovingPlatform/MovingPlatform.tscn" type="PackedScene" id=14]
+
+[sub_resource type="Animation" id=2]
+resource_name = "world-5b-platform-1"
+length = 7.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2.5, 5, 7.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 541, 239 ), Vector2( 638, 331 ), Vector2( 541, 331 ), Vector2( 541, 239 ) ]
+}
+
+[sub_resource type="NavigationPolygon" id=1]
+vertices = PoolVector2Array( 620.33, 431.385, 330.643, 426.345, 495.465, 313.459, 686.259, 337.649, 458.505, 255.001, 460.27, 271.705, 442.522, 271.127, 101.89, 90.7117, 477.484, 238.874, 478.291, 256.29, 443.521, 286.246, 91.9007, 286.246, 813.122, 96.7592, 814.121, 288.262, 765.174, 289.27, 799.245, 80.6718, 732.209, 321.523, 732.209, 336.641, 749.191, 305.396, 749.191, 320.515, 764.175, 305.396, 497.441, 240.88 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 6, 7 ), PoolIntArray( 8, 9, 4, 7 ), PoolIntArray( 6, 10, 11, 7 ), PoolIntArray( 12, 13, 14, 15 ), PoolIntArray( 16, 17, 3 ), PoolIntArray( 18, 19, 16 ), PoolIntArray( 14, 20, 18 ), PoolIntArray( 18, 16, 3, 2, 21, 15, 14 ), PoolIntArray( 8, 7, 15, 21 ) ]
+outlines = [ PoolVector2Array( 101.89, 90.7117, 91.9007, 286.246, 443.521, 286.246, 442.522, 271.127, 460.27, 271.705, 458.505, 255.001, 478.291, 256.29, 477.484, 238.874, 497.441, 240.88, 495.465, 313.459, 330.643, 426.345, 620.33, 431.385, 686.259, 337.649, 732.209, 336.641, 732.209, 321.523, 749.191, 320.515, 749.191, 305.396, 764.175, 305.396, 765.174, 289.27, 814.121, 288.262, 813.122, 96.7592, 799.245, 80.6718 ) ]
+
+[node name="World" type="Node2D"]
+script = ExtResource( 13 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.631373, 0.956863, 1, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="BackgroundMap" type="TileMap" parent="."]
+visible = false
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 1179680, 2, 0, 1179681, 2, 0, 1179682, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WorldMap" type="TileMap" parent="."]
+tile_set = ExtResource( 11 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 65587, 2, 0, 65588, 2, 0, 65589, 2, 0, 65590, 2, 0, 65591, 2, 0, 65592, 2, 0, 65593, 2, 0, 65594, 2, 0, 131123, 2, 0, 131124, 2, 0, 131125, 2, 0, 131126, 2, 0, 131127, 2, 0, 131128, 2, 0, 131129, 2, 0, 131130, 2, 0, 196659, 2, 0, 196660, 2, 0, 196661, 2, 0, 196662, 2, 0, 196663, 2, 0, 196664, 2, 0, 196665, 2, 0, 196666, 2, 0, 262195, 2, 0, 262196, 2, 0, 262197, 2, 0, 262198, 2, 0, 262199, 2, 0, 262200, 2, 0, 262201, 2, 0, 262202, 2, 0, 327731, 2, 0, 327732, 2, 0, 327733, 2, 0, 327734, 2, 0, 327735, 2, 0, 327736, 2, 0, 327737, 2, 0, 327738, 2, 0, 393267, 2, 0, 393268, 2, 0, 393269, 2, 0, 393270, 2, 0, 393271, 2, 0, 393272, 2, 0, 393273, 2, 0, 393274, 2, 0, 458803, 2, 0, 458804, 2, 0, 458805, 2, 0, 458806, 2, 0, 458807, 2, 0, 458808, 2, 0, 458809, 2, 0, 458810, 2, 0, 524339, 2, 0, 524340, 2, 0, 524341, 2, 0, 524342, 2, 0, 524343, 2, 0, 524344, 2, 0, 524345, 2, 0, 524346, 2, 0, 589875, 2, 0, 589876, 2, 0, 589877, 2, 0, 589878, 2, 0, 589879, 2, 0, 589880, 2, 0, 589881, 2, 0, 589882, 2, 0, 655411, 2, 0, 655412, 2, 0, 655413, 2, 0, 655414, 2, 0, 655415, 2, 0, 655416, 2, 0, 655417, 2, 0, 655418, 2, 0, 720947, 2, 0, 720948, 2, 0, 720949, 2, 0, 720950, 2, 0, 720951, 2, 0, 720952, 2, 0, 720953, 2, 0, 720954, 2, 0, 786483, 2, 0, 786484, 2, 0, 786485, 2, 0, 786486, 2, 0, 786487, 2, 0, 786488, 2, 0, 786489, 2, 0, 786490, 2, 0, 852019, 2, 0, 852020, 2, 0, 852021, 2, 0, 852022, 2, 0, 852023, 2, 0, 852024, 2, 0, 852025, 2, 0, 852026, 2, 0, 917555, 2, 0, 917556, 2, 0, 917557, 2, 0, 917558, 2, 0, 917559, 2, 0, 917560, 2, 0, 917561, 2, 0, 917562, 2, 0, 983070, 2, 0, 983091, 2, 0, 983092, 2, 0, 983093, 2, 0, 983094, 2, 0, 983095, 2, 0, 983096, 2, 0, 983097, 2, 0, 983098, 2, 0, 1048605, 2, 0, 1048606, 2, 0, 1048627, 2, 0, 1048628, 2, 0, 1048629, 2, 0, 1048630, 2, 0, 1048631, 2, 0, 1048632, 2, 0, 1048633, 2, 0, 1048634, 2, 0, 1114140, 2, 0, 1114141, 2, 0, 1114142, 2, 0, 1114163, 2, 0, 1114164, 2, 0, 1114165, 2, 0, 1114166, 2, 0, 1114167, 2, 0, 1114168, 2, 0, 1114169, 2, 0, 1114170, 2, 0, 1179648, 0, 1, 1179649, 0, 1, 1179650, 0, 1, 1179651, 0, 1, 1179652, 0, 1, 1179653, 0, 1, 1179654, 0, 1, 1179655, 0, 1, 1179656, 0, 1, 1179657, 0, 1, 1179658, 0, 1, 1179659, 0, 1, 1179660, 0, 1, 1179661, 0, 1, 1179662, 0, 1, 1179663, 0, 1, 1179664, 0, 1, 1179665, 0, 1, 1179666, 0, 1, 1179667, 0, 1, 1179668, 0, 1, 1179669, 0, 1, 1179670, 0, 1, 1179671, 0, 1, 1179672, 0, 1, 1179673, 0, 1, 1179674, 0, 1, 1179675, 2, 0, 1179676, 2, 0, 1179677, 2, 0, 1179678, 2, 0, 1179696, 2, 0, 1179697, 2, 0, 1179698, 2, 0, 1179699, 2, 0, 1179700, 2, 0, 1179701, 2, 0, 1179702, 2, 0, 1179703, 2, 0, 1179704, 2, 0, 1179705, 2, 0, 1179706, 2, 0, 1245231, 2, 0, 1245232, 2, 0, 1245233, 2, 0, 1245234, 2, 0, 1245235, 2, 0, 1245236, 2, 0, 1245237, 2, 0, 1245238, 2, 0, 1245239, 2, 0, 1245240, 2, 0, 1245241, 2, 0, 1245242, 2, 0, 1310766, 2, 0, 1310767, 2, 0, 1310768, 2, 0, 1310769, 2, 0, 1310770, 2, 0, 1310771, 2, 0, 1310772, 2, 0, 1310773, 2, 0, 1310774, 2, 0, 1310775, 2, 0, 1310776, 2, 0, 1310777, 2, 0, 1310778, 2, 0, 1376299, 2, 0, 1376300, 2, 0, 1376301, 2, 0, 1376302, 2, 0, 1376303, 2, 0, 1376304, 2, 0, 1376305, 2, 0, 1376306, 2, 0, 1376307, 2, 0, 1376308, 2, 0, 1376309, 2, 0, 1376310, 2, 0, 1376311, 2, 0, 1376312, 2, 0, 1376313, 2, 0, 1376314, 2, 0, 1441835, 2, 0, 1441836, 2, 0, 1441837, 2, 0, 1441838, 2, 0, 1441839, 2, 0, 1441840, 2, 0, 1441841, 2, 0, 1441842, 2, 0, 1441843, 2, 0, 1441844, 2, 0, 1441845, 2, 0, 1441846, 2, 0, 1441847, 2, 0, 1441848, 2, 0, 1441849, 2, 0, 1441850, 2, 0, 1507371, 2, 0, 1507372, 2, 0, 1507373, 2, 0, 1507374, 2, 0, 1507375, 2, 0, 1507376, 2, 0, 1507377, 2, 0, 1507378, 2, 0, 1507379, 2, 0, 1507380, 2, 0, 1507381, 2, 0, 1507382, 2, 0, 1507383, 2, 0, 1507384, 2, 0, 1507385, 2, 0, 1507386, 2, 0, 1572907, 2, 0, 1572908, 2, 0, 1572909, 2, 0, 1572910, 2, 0, 1572911, 2, 0, 1572912, 2, 0, 1572913, 2, 0, 1572914, 2, 0, 1572915, 2, 0, 1572916, 2, 0, 1572917, 2, 0, 1572918, 2, 0, 1572919, 2, 0, 1572920, 2, 0, 1572921, 2, 0, 1572922, 2, 0, 1638443, 2, 0, 1638444, 2, 0, 1638445, 2, 0, 1638446, 2, 0, 1638447, 2, 0, 1638448, 2, 0, 1638449, 2, 0, 1638450, 2, 0, 1638451, 2, 0, 1638452, 2, 0, 1638453, 2, 0, 1638454, 2, 0, 1638455, 2, 0, 1638456, 2, 0, 1638457, 2, 0, 1638458, 2, 0, 1703979, 2, 0, 1703980, 2, 0, 1703981, 2, 0, 1703982, 2, 0, 1703983, 2, 0, 1703984, 2, 0, 1703985, 2, 0, 1703986, 2, 0, 1703987, 2, 0, 1703988, 2, 0, 1703989, 2, 0, 1703990, 2, 0, 1703991, 2, 0, 1703992, 2, 0, 1703993, 2, 0, 1703994, 2, 0, 1769515, 2, 0, 1769516, 2, 0, 1769517, 2, 0, 1769518, 2, 0, 1769519, 2, 0, 1769520, 2, 0, 1769521, 2, 0, 1769522, 2, 0, 1769523, 2, 0, 1769524, 2, 0, 1769525, 2, 0, 1769526, 2, 0, 1769527, 2, 0, 1769528, 2, 0, 1769529, 2, 0, 1769530, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Objects" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Destination" parent="Objects" instance=ExtResource( 4 )]
+position = Vector2( 545, -11 )
+
+[node name="DeathTrigger" parent="Objects" instance=ExtResource( 5 )]
+position = Vector2( 512, 592 )
+scale = Vector2( 512, 1 )
+
+[node name="FoodBag" parent="Objects" instance=ExtResource( 9 )]
+position = Vector2( 795, 271 )
+
+[node name="FoodDish" parent="Objects" instance=ExtResource( 10 )]
+position = Vector2( 388, 275 )
+
+[node name="Computer" parent="Objects" instance=ExtResource( 2 )]
+position = Vector2( 349, 272 )
+
+[node name="ComputerNotificationTimer" type="Timer" parent="Objects"]
+wait_time = 8.0
+autostart = true
+
+[node name="MovingPlatform" parent="Objects" instance=ExtResource( 14 )]
+currentAnimation = "world-5b-platform-1"
+
+[node name="AnimationPlayer" parent="Objects/MovingPlatform" index="2"]
+anims/world-5b-platform-1 = SubResource( 2 )
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 420, 281 )
+speed = 95
+can_climb = false
+can_double_jump = false
+can_glide = false
+can_gravity = false
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Label" parent="UI" instance=ExtResource( 8 )]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -112.0
+margin_right = -16.0
+margin_bottom = -16.0
+
+[node name="Transition" parent="UI" instance=ExtResource( 7 )]
+visible = false
+start_closed = true
+
+[node name="Navigation2D" type="Navigation2D" parent="."]
+script = ExtResource( 12 )
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="Navigation2D"]
+position = Vector2( 2, 1 )
+scale = Vector2( 1.00108, 0.992154 )
+navpoly = SubResource( 1 )
+
+[node name="DEBUG_path_line" type="Line2D" parent="Navigation2D"]
+visible = false
+
+[node name="DEBUG_next_step_marker" type="ColorRect" parent="Navigation2D"]
+visible = false
+margin_right = 5.0
+margin_bottom = 5.0
+color = Color( 0, 0.0666667, 0.615686, 1 )
+
+[node name="PathCalculationTimer" type="Timer" parent="."]
+wait_time = 0.05
+autostart = true
+
+[node name="Cat" parent="." instance=ExtResource( 6 )]
+position = Vector2( 324, 187 )
+scale = Vector2( 2.5, 2.5 )
+
+[connection signal="timeout" from="Objects/ComputerNotificationTimer" to="Objects/Computer" method="notify"]
+[connection signal="timeout" from="PathCalculationTimer" to="Navigation2D" method="_on_PathCalculationTimer_timeout"]
+
+[editable path="Objects/MovingPlatform"]
