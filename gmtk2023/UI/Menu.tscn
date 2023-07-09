@@ -249,6 +249,7 @@ text = "Controls:
 
 W,A,S,D - Move Cat
 Left Arrow, Right Arrow - Rotate Laser
+Up Arrow, Down Arrow - Zoom
 Space - Fire Laser"
 
 [node name="Transition" parent="." instance=ExtResource( 1 )]
