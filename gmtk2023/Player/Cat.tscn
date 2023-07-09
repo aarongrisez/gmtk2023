@@ -23,7 +23,6 @@ collision_layer = 4
 
 [node name="Cat-neutral" type="AnimatedSprite" parent="KinematicBody2D"]
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
@@ -44,6 +43,7 @@ offset = Vector2( 8.06848, 7.59083 )
 script = ExtResource( 3 )
 
 [node name="RayCast2D" type="RayCast2D" parent="KinematicBody2D/Pen"]
+visible = false
 position = Vector2( 11.7562, 12.3512 )
 enabled = true
 cast_to = Vector2( 5470, 5643.6 )
@@ -52,29 +52,36 @@ cast_to = Vector2( 5470, 5643.6 )
 shape = SubResource( 2 )
 
 [node name="RayCast2D2" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, -200 )
 
 [node name="RayCast2D3" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, -200 )
 
 [node name="RayCast2D4" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, -200 )
 
 [node name="RayCast2D5" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, -200 )
 
 [node name="RayCast2D6" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, -200 )
 
 [node name="RayCast2D7" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, -200 )
 
 [node name="RayCast2D8" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, -200 )

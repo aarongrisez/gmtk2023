@@ -92,7 +92,7 @@ func render_raycast(raycast_render_info):
 	else:
 		polygon.push_back(to_local(terminus + Vector2(-1, 0)))
 		polygon.push_back(to_local(terminus + Vector2(1, 0)))
-		
+
 	draw_colored_polygon(polygon, Color(1, 0, 0))
 	
 	raycast_render_info.collision_hyp = collision_hyp
@@ -174,13 +174,13 @@ func _physics_process(delta):
 	var gas_up = Input.get_action_strength("up")
 	var gas_down = Input.get_action_strength("down")
 	movement_dir = Vector2(gas_right - gas_left, gas_down - gas_up)
-	Global.print_val_every(60, "movement_dir", movement_dir)
+	# Global.print_val_every(60, "movement_dir", movement_dir)
 
 	var n_speed = movement_speed * movement_dir
-	Global.print_val_every(60, "n_speed", n_speed)
+	# Global.print_val_every(60, "n_speed", n_speed)
 	movement_velocity.x = calc_velocity_dir(n_speed.x, movement_velocity.x)
 	movement_velocity.y = calc_velocity_dir(n_speed.y, movement_velocity.y)
-	Global.print_val_every(60, "movement_velocity", movement_velocity)
+	# Global.print_val_every(60, "movement_velocity", movement_velocity)
 	catKinematicBody.move_and_slide(movement_velocity)
 	
 	raycast_info.deactivate_children()
@@ -197,7 +197,7 @@ func _physics_process(delta):
 			destination.position = raycast_info.terminus
 
 		var collider = raycast.get_collider()
-		if collider.name == "Mirror":
+		if "Mirror" in collider.name:
 			process_child_raycast(raycast2_info, raycast_info)
 	else:
 		raycast_info.terminus = get_global_transform().xform(raycast.get_cast_to())

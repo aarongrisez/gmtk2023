@@ -20,8 +20,10 @@ func _is_path_reachable(path):
 	var previous = player.position
 	for current in path:
 		if previous.y > current.y and abs(previous.y - current.y) > player.get_jump_max_reach():
+			Global.print_val_every(60, "is_path_reachable", false)
 			return false
 		previous = current
+	Global.print_val_every(60, "is_path_reachable", true)
 	return true
 	
 # Calculates an alternative path offsetting path start position
@@ -55,11 +57,13 @@ func _calculate_alternate_path():
 func _should_jump(next_step):
 	var y_distance = abs(player.position.y -  next_step.y)
 
-	return (
+	var result = (
 			player.is_facing_jumpable_blocker() or
 			(player.is_facing_edge() and player.position.y > next_step.y) or
-			(y_distance < player.get_jump_max_reach() and player.position.y - 10 > next_step.y and abs(player.position.x - next_step.x) < 4)
+			(y_distance < player.get_jump_max_reach() and player.position.y - 10 > next_step.y and abs(player.position.x - next_step.x) < 10)
 			)
+	Global.print_val_every(60, "should_jump", result)
+	return result
 
 
 func _follow_along_path():
