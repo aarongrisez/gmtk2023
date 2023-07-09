@@ -26,10 +26,8 @@ func _ready():
 	pass # Replace with function body.
 	
 func _draw():
-	if laser_on and raycast2.is_enabled():
+	if laser_on:
 		draw_line(to_local(raycast_origin), to_local(raycast_collision), Color(1, 0, 0), 2, true)
-	else:
-		destination.position = raycast_collision
 
 func _process(delta):
 	var current_rotation = catKinematicBody.rotation
