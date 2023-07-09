@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Fonts/yoster.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://UI/DialogBox/DialogBox.gd" type="Script" id=2]
 [ext_resource path="res://UI/AnimatedButton/Unselect.wav" type="AudioStream" id=3]
 [ext_resource path="res://UI/AnimatedButton/Select.wav" type="AudioStream" id=4]
+[ext_resource path="res://UI/AnimatedButton/AnimatedButton.tscn" type="PackedScene" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -28,9 +29,6 @@ custom_styles/normal = SubResource( 2 )
 text = "Hallo ich bin Texti"
 autowrap = true
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Tween" type="Tween" parent="."]
 
@@ -39,3 +37,17 @@ stream = ExtResource( 4 )
 
 [node name="Off" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+
+[node name="AnimatedButton" parent="." instance=ExtResource( 5 )]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -243.0
+margin_top = -64.0
+margin_right = 0.0
+margin_bottom = 0.0
+text = "Next Level"
+flat = true
+
+[connection signal="pressed" from="AnimatedButton" to="." method="_on_AnimatedButton_pressed"]

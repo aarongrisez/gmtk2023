@@ -15,7 +15,6 @@ func collect():
 	
 	if Global.max_coins != 1:
 		audio.pitch_scale = (float(Global.current_coins) / (Global.max_coins - 1)) + 1
-	print(audio.pitch_scale)
 	Global.collect_coin()
 	audio.play(0)
 	visible = false

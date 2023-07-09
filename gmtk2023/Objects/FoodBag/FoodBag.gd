@@ -14,7 +14,6 @@ func collect():
 	
 	if Global.max_food != 1:
 		audio.pitch_scale = (float(Global.current_food) / (Global.max_food - 1)) + 1
-	print(audio.pitch_scale)
 	Global.collect_food()
 	audio.play(0)
 	visible = false

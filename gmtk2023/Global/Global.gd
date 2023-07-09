@@ -2,6 +2,30 @@ extends Node
 
 signal blocks_switched
 
+var inc = 0
+func print_once(string):
+	if inc == 0:
+		print(string)
+		
+func print_every(nframes, string):
+	if inc % nframes == 0:
+		print(string)
+
+func print_val(name, val):
+	print("{name}: {val}".format({"name": name, "val": val}))
+
+func print_val_once(name, val):
+	if inc == 0:
+		print_val(name, val)
+
+func print_val_every(nframes, name, val):
+	if inc % nframes == 0:
+		print_val(name, val)
+
+func _physics_process(_delta):
+	inc += 1
+
+
 var max_food = 0
 var max_dish = 0
 var current_food = 0
@@ -11,8 +35,32 @@ var WIN_TEXTS = [
 	"Congratulations! Fluffy isn't going to starve now :D",
 	"About damn time... Buckaroo hasn't eaten in AGES!",
 	"FOODFOODFOODFOODFOODFOOD",
-	"*cronching sounds commence*"
+	"cronching sounds commence"
 ]
+var SCENES = [
+	"res://World/World1.tscn",
+	"res://World/World2.tscn",
+	"res://World/World3.tscn",
+	"res://World/World4.tscn",
+	"res://World/World5.tscn",
+	"res://UI/GameOver.tscn"
+]
+
+var rng = RandomNumberGenerator.new()
+var current_scene = 0
+
+func reset_counters():
+	max_food = 0
+	max_dish = 0
+	current_food = 0
+	collected_food = 0
+
+func transition_next_scene():
+	reset_counters()
+	current_scene += 1
+	if current_scene < len(SCENES):
+		get_tree().change_scene(SCENES[current_scene])
+		
 
 var text_box = ""
 
@@ -23,7 +71,8 @@ func _unhandled_input(_event):
 		OS.window_fullscreen = !OS.window_fullscreen
 
 func get_win_text():
-	return WIN_TEXTS[randi() % WIN_TEXTS.size()]
+	rng.set_seed(hash(String(OS.get_time())))
+	return WIN_TEXTS[rng.randi() % WIN_TEXTS.size()]
 
 func init_food():
 	max_food += 1
@@ -34,11 +83,9 @@ func init_dish():
 func collect_food():
 	current_food += 1
 
-
 func pour_food():
 	collected_food += 1
-	if collected_food == max_dish:
-		text_box = get_win_text()
+	current_food -= 1
 		
 func switch_blocks():
 	block_switch = !block_switch

@@ -10,10 +10,15 @@ func _ready():
 	calculate_switch_blocks()
 	var _error = Global.connect("blocks_switched",self,"calculate_switch_blocks")
 	transition.open()
+	win_text = Global.get_win_text()
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("pause"):
 		var _error = get_tree().change_scene("res://UI/Menu.tscn")
+
+func _process(_delta):
+	if Global.collected_food == Global.max_dish and Global.text_box == "":
+		Global.text_box = win_text
 
 func calculate_switch_blocks():
 	if Global.block_switch:

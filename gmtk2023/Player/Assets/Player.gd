@@ -66,12 +66,6 @@ func _ready():
 func _process(_delta):
 	$Label.text = STATES.keys()[state]# + " -- " + str(rotation_degrees)
 	update()
-	if is_facing_edge():
-		print("edge")
-	if is_facing_impossible_blocker():
-		print("impossible")
-	if is_facing_jumpable_blocker():
-		print("jumpable")
 
 func _physics_process(delta):
 	last_state = state
@@ -99,14 +93,8 @@ func _physics_process(delta):
 	if is_on_floor() || (state == STATES.Climb):
 		on_ground = true
 		jump_left = jump_count
-	else:
-		if $Coyote.is_stopped() && on_ground == true:
-			$Coyote.start()
-		
-		if last_state == STATES.Climb && state != STATES.Climb && velocity.y < 0:
-			jump = true
-	
-	if jump  || (buffer_jump && (on_ground || (jump_left > 0 && can_double_jump))):
+
+	if jump and is_on_floor():
 		jump = false
 		buffer_jump = false
 		on_ground = false
@@ -181,13 +169,9 @@ func _physics_process(delta):
 	#Move and Slide
 	calculate_gravity_normal()
 	var grav_rot = gravity_normal.angle_to(Vector2(0,1))
-	#print("velocity ", velocity)
 	velocity = move_and_slide_with_snap(velocity.rotated(-grav_rot),gravity_normal*snap,-gravity_normal,true,4,deg2rad(80)).rotated(grav_rot)
-	#velocity = move_and_slide_with_snap(velocity,Vector2(0,snap),Vector2.UP)
 
 func get_input(): 
-	#movement_dir = Input.get_vector("left","right","null","null").x
-	#print(movement_dir)
 	if Input.is_action_just_pressed("left") || Input.is_action_just_pressed("right") :
 		# -90 bis 90 normal
 		if rotation_degrees > 92 || (rotation_degrees < -92 && rotation_degrees > -200):
@@ -297,11 +281,6 @@ func calculate_sprite():
 	elif state == STATES.Jump:
 		sprite.scale = (sprite.scale + Vector2(1.18,0.85))/2
 		
-#		if last_state != STATES.Jump:
-#			print("Jump")
-#			stween.remove_all()
-#			stween.interpolate_property(sprite,"scale",null,Vector2(1.25,0.8),0.3,Tween.TRANS_SINE,Tween.EASE_OUT)
-#			stween.start()
 		sprite.animation = "jump"
 	elif state == STATES.Fall:
 		if !last_state == STATES.Climb && !is_on_ceiling():
@@ -386,17 +365,6 @@ func check_abilities():
 	can_double_jump = Global.has_ability("double_jump")
 	can_glide = Global.has_ability("glide")
 	can_gravity = Global.has_ability("gravity")
-
-func _on_Coyote_timeout():
-	on_ground = is_on_floor()
-	if !on_ground && jump_left == jump_count:
-		jump_left = jump_count - 1
-
-func _on_BufferJump_timeout():
-	buffer_jump = false
-
-func _on_ForceJump_timeout():
-	forced_jump = false
 
 func death():
 	Global.restart_game()

@@ -121,7 +121,6 @@ can_gravity = false
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Label" parent="UI" instance=ExtResource( 15 )]
-visible = false
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0

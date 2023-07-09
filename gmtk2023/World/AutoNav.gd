@@ -92,7 +92,6 @@ func _on_PathCalculationTimer_timeout():
 	# A section is considered unreachable when the Y distance between two points
 	# is higher than the character's jump can reach.
 	if not _is_path_reachable(path):
-		#print("unreachable, calculating alternative")
 		path = _calculate_alternate_path()
 	_current_path = path
 
