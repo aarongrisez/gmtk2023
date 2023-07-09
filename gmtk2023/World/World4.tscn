@@ -101,7 +101,7 @@ anims/world-2-platform-1 = SubResource( 2 )
 position = Vector2( 545, -11 )
 
 [node name="DeathTrigger" parent="Objects" instance=ExtResource( 2 )]
-position = Vector2( 512, 592 )
+position = Vector2( 505, 471 )
 scale = Vector2( 512, 1 )
 
 [node name="FoodBag" parent="Objects" instance=ExtResource( 7 )]

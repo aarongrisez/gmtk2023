@@ -106,8 +106,10 @@ scale = Vector2( 0.998898, 1.00001 )
 navpoly = SubResource( 1 )
 
 [node name="DEBUG_path_line" type="Line2D" parent="Navigation2D"]
+visible = false
 
 [node name="DEBUG_next_step_marker" type="ColorRect" parent="Navigation2D"]
+visible = false
 margin_right = 5.0
 margin_bottom = 5.0
 color = Color( 0, 0.0666667, 0.615686, 1 )
