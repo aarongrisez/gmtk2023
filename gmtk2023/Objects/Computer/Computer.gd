@@ -7,9 +7,11 @@ func send_notification():
 	$AnimatedSprite.play("notification")
 	$AudioStreamPlayer.play(0)
 	destination.position = position
+	Global.currently_notifying = true
 
 func cancel_notification():
 	$AnimatedSprite.play("idle")
+	Global.currently_notifying = false
 
 func notify():
 	send_notification() # Replace with function body.

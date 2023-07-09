@@ -68,7 +68,8 @@ func transition_next_scene():
 	current_scene += 1
 	if current_scene < len(SCENES):
 		get_tree().change_scene(SCENES[current_scene])
-		
+
+var currently_notifying = false
 
 var text_box = ""
 

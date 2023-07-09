@@ -89,8 +89,8 @@ can_gravity = false
 
 [node name="CoinCounter" parent="UI" instance=ExtResource( 14 )]
 anchor_right = 0.0
-margin_right = 0.0
-margin_bottom = -550.0
+margin_right = 328.0
+margin_bottom = -7.0
 
 [node name="Label" parent="UI" instance=ExtResource( 8 )]
 anchor_top = 1.0
