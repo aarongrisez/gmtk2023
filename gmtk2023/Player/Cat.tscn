@@ -21,6 +21,7 @@ collision_layer = 4
 
 [node name="Cat-neutral" type="AnimatedSprite" parent="KinematicBody2D"]
 frames = SubResource( 1 )
+frame = 1
 playing = true
 
 [node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
@@ -44,3 +45,7 @@ script = ExtResource( 3 )
 position = Vector2( 11.7562, 12.3512 )
 enabled = true
 cast_to = Vector2( 5470, 5643.6 )
+
+[node name="RayCast2D2" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 0, -200 )
