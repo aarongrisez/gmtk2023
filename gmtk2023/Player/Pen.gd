@@ -38,8 +38,8 @@ func _draw():
 		if raycast.is_colliding():
 			var raycast_collision_angle = acos(raycast_direction.dot(raycast_collision_normal))
 			var raycast_collision_hyp = -2 / cos(raycast_collision_angle)
-			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(3.14 / 2) * raycast_collision_hyp / 2 / get_scale()))
-			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(-3.14 / 2) * raycast_collision_hyp / 2 / get_scale()))
+			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(3.14 / 2) * raycast_collision_hyp / 2))
+			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(-3.14 / 2) * raycast_collision_hyp / 2))
 		else:
 			polygon.push_back(to_local(raycast_collision) + Vector2(1, 0))
 			polygon.push_back(to_local(raycast_collision) + Vector2(-1, 0))
