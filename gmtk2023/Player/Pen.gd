@@ -2,6 +2,8 @@ extends Sprite
 
 var MIN_ROTATION = -0.950007
 var MAX_ROTATION = 0.965705
+var MIN_ZOOM = 0.25
+var MAX_ZOOM = 0.50
 var speed = 250
 export var turning = 1.0
 var laser_on = false
@@ -44,8 +46,9 @@ onready var raycast5 = scene.find_node("RayCast2D5")
 onready var raycast6 = scene.find_node("RayCast2D6")
 onready var raycast7 = scene.find_node("RayCast2D7")
 onready var raycast8 = scene.find_node("RayCast2D8")
-onready var destination = get_tree().get_current_scene().find_node("Destination")
-onready var catKinematicBody = get_tree().get_current_scene().find_node("Cat").find_node("KinematicBody2D")
+onready var destination = scene.find_node("Destination")
+onready var catKinematicBody = scene.find_node("Cat").find_node("KinematicBody2D")
+onready var camera = catKinematicBody.find_node("Camera2D")
 
 onready var raycast8_info = RaycastRenderInfo.new().init(true, raycast8, null)
 onready var raycast7_info = RaycastRenderInfo.new().init(true, raycast7, raycast8_info)
@@ -148,6 +151,20 @@ func _physics_process(delta):
 	if Input.is_action_pressed('ui_right'):
 		if current_rotation > MIN_ROTATION:
 			catKinematicBody.rotation -= turning * delta
+			
+	
+	var add_offset = Vector2(-120, -70)		
+	var current_zoom = camera.zoom
+	if Input.is_action_pressed('ui_down'):
+		if current_zoom.x < MAX_ZOOM:
+			camera.zoom.x += 0.01
+			camera.zoom.y += 0.01
+			camera.offset = Vector2(100, 50) - ((camera.zoom.x / MIN_ZOOM) - 1) * add_offset
+	if Input.is_action_pressed('ui_up'):
+		if current_zoom.y > MIN_ZOOM:
+			camera.zoom.x -= 0.01
+			camera.zoom.y -= 0.01
+			camera.offset = Vector2(100, 50) - ((camera.zoom.x / MIN_ZOOM) - 1) * add_offset
 
 	movement_dir = Input.get_vector("left","right","up","down")
 
