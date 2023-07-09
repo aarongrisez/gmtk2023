@@ -125,6 +125,9 @@ func process_child_raycast(raycast_info, prev_raycast_info):
 		raycast_info.terminus = raycast.get_collision_point()
 		raycast_info.collision_normal = raycast.get_collision_normal()
 
+		if laser_on:
+			destination.position = raycast_info.terminus
+
 		var collider = raycast.get_collider()
 		if "Mirror" in collider.name and raycast_info.child != null:
 			process_child_raycast(raycast_info.child, raycast_info)
@@ -138,7 +141,6 @@ func _physics_process(delta):
 	if Input.is_action_pressed('ui_laser'):
 		laser_on = true
 		laser_strength = 1
-		destination.position = raycast_info.terminus
 	if Input.is_action_just_released("ui_laser"):
 		laser_on = false
 	if Input.is_action_pressed('ui_left'):
@@ -165,6 +167,9 @@ func _physics_process(delta):
 	if raycast.is_colliding():
 		raycast_info.terminus = raycast.get_collision_point()
 		raycast_info.collision_normal = raycast.get_collision_normal()
+		
+		if laser_on:
+			destination.position = raycast_info.terminus
 
 		var collider = raycast.get_collider()
 		if collider.name == "Mirror":
