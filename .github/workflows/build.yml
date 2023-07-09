@@ -41,6 +41,6 @@ jobs:
           path: gmtk2023/build/web
       - name: Publish to ItchIO
         run: |
-          butler push ./gmtk2023/build/web aarongrisez/gmtk2023:web
+          butler push ./gmtk2023/build/web aarongrisez/laser-focused:web
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
