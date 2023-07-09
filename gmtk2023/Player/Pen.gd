@@ -86,7 +86,6 @@ func render_raycast(raycast_render_info):
 		collision_hyp = -2 / cos(collision_angle)
 		polygon.push_back(to_local(terminus + collision_normal.rotated(3.14 / 2) * collision_hyp / 2))
 		polygon.push_back(to_local(terminus + collision_normal.rotated(-3.14 / 2) * collision_hyp / 2))
-		polygon.push_back(to_local(terminus + collision_normal.rotated(-3.14 / 2) * collision_hyp / 2))
 	else:
 		polygon.push_back(to_local(terminus + Vector2(-1, 0)))
 		polygon.push_back(to_local(terminus + Vector2(1, 0)))
