@@ -77,11 +77,8 @@ wait_time = 0.2
 one_shot = true
 
 [node name="BufferJump" type="Timer" parent="."]
-wait_time = 0.2
 
 [node name="ForceJump" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
 
 [node name="Label" type="Label" parent="."]
 visible = false

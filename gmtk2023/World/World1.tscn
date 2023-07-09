@@ -57,7 +57,6 @@ __meta__ = {
 
 [node name="Destination" parent="Objects" instance=ExtResource( 16 )]
 position = Vector2( 222, 25 )
-scale = Vector2( 0.926229, 0.0041056 )
 
 [node name="DeathTrigger" parent="Objects" instance=ExtResource( 2 )]
 position = Vector2( 512, 592 )
@@ -88,9 +87,6 @@ margin_left = 16.0
 margin_top = -112.0
 margin_right = -16.0
 margin_bottom = -16.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Transition" parent="UI" instance=ExtResource( 10 )]
 visible = false

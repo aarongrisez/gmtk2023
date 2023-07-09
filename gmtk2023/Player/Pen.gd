@@ -4,6 +4,8 @@ var MIN_ROTATION = -0.950007
 var MAX_ROTATION = 0.965705
 var speed = 250
 export var turning = 1.0
+var laser_on = false
+var laser_strength = 0
 
 var raycast_origin = Vector2(0, 0)
 var raycast_collision = Vector2(0, 0)
@@ -24,16 +26,19 @@ func _ready():
 	pass # Replace with function body.
 	
 func _draw():
-	if Input.is_action_pressed('ui_laser'):
+	if laser_on and raycast2.is_enabled():
 		draw_line(to_local(raycast_origin), to_local(raycast_collision), Color(1, 0, 0), 2, true)
-		if raycast2.is_enabled():
-			draw_line(to_local(raycast2_origin), to_local(raycast2_collision), Color(1, 0, 0), 2, true)
-			# destination.position = raycast2_collision
-		else:
-			destination.position = raycast_collision
+	else:
+		destination.position = raycast_collision
 
 func _process(delta):
 	var current_rotation = catKinematicBody.rotation
+	if Input.is_action_pressed('ui_laser'):
+		laser_on = true
+		laser_strength = 1
+		destination.position = raycast_collision
+	if Input.is_action_just_released("ui_laser"):
+		laser_on = false
 	if Input.is_action_pressed('ui_left'):
 		if current_rotation < MAX_ROTATION:
 			catKinematicBody.rotation += turning * delta
@@ -64,7 +69,7 @@ func print_val_every(nframes, name, val):
 	if inc % nframes == 0:
 		print_val(name, val)
 
-func _physics_process(delta):	
+func _physics_process(_delta):	
 	var nframes = 60
 	
 	var n_speed = movement_speed * movement_dir
