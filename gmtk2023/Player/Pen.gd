@@ -13,7 +13,7 @@ var raycast_collision_normal = Vector2(0, 0)
 var raycast_mirrored = false
 var raycast2_origin = Vector2(0, 0)
 var raycast2_collision = Vector2(0, 0)
-var raycast2_normal = Vector2(0, 0)
+var raycast2_collision_normal = Vector2(0, 0)
 
 var movement_dir = Vector2(0, 0)
 var movement_speed = 200
@@ -31,13 +31,15 @@ func _draw():
 	if laser_on:
 		var polygon = PoolVector2Array()
 		var raycast_direction = (raycast_collision - raycast_origin).normalized()
+		var raycast_collision_angle = 0
+		var raycast_collision_hyp = 0
 		
 		polygon.push_back(to_local(raycast_origin) + Vector2(-1, 0))
 		polygon.push_back(to_local(raycast_origin) + Vector2(1, -0.5))
 		
 		if raycast.is_colliding():
-			var raycast_collision_angle = acos(raycast_direction.dot(raycast_collision_normal))
-			var raycast_collision_hyp = -2 / cos(raycast_collision_angle)
+			raycast_collision_angle = acos(raycast_direction.dot(raycast_collision_normal))
+			raycast_collision_hyp = -2 / cos(raycast_collision_angle)
 			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(3.14 / 2) * raycast_collision_hyp / 2))
 			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(-3.14 / 2) * raycast_collision_hyp / 2))
 		else:
@@ -48,10 +50,24 @@ func _draw():
 
 		if raycast2.is_enabled():
 			polygon = PoolVector2Array()
-			polygon.push_back(to_local(raycast2_origin + Vector2(-1, 0) / get_scale()))
-			polygon.push_back(to_local(raycast2_origin + Vector2(1, 0) / get_scale()))
-			polygon.push_back(to_local(raycast2_collision + Vector2(1, 0) / get_scale()))
-			polygon.push_back(to_local(raycast2_collision + Vector2(-1, 0) / get_scale()))
+			var raycast2_direction = (raycast2_collision - raycast2_origin).normalized()
+			var raycast2_collision_angle = 0
+			var raycast2_collision_hyp = 0
+
+			polygon.push_back(to_local(raycast2_origin + raycast_collision_normal.rotated(-3.14 / 2) * raycast_collision_hyp / 2))
+			polygon.push_back(to_local(raycast2_origin + raycast_collision_normal.rotated(3.14 / 2) * raycast_collision_hyp / 2))
+			
+			if raycast2.is_colliding():
+				raycast2_collision_angle = acos(raycast2_direction.dot(raycast2_collision_normal))
+				raycast2_collision_hyp = -2 / cos(raycast2_collision_angle)
+				print(raycast2_collision_angle)
+				print(raycast2_collision_hyp)
+				polygon.push_back(to_local(raycast2_collision + raycast2_collision_normal.rotated(-3.14 / 2) * raycast2_collision_hyp / 2))
+				polygon.push_back(to_local(raycast2_collision + raycast2_collision_normal.rotated(3.14 / 2) * raycast2_collision_hyp / 2))
+			else:
+				polygon.push_back(to_local(raycast2_collision + Vector2(1, 0) / get_scale()))
+				polygon.push_back(to_local(raycast2_collision + Vector2(-1, 0) / get_scale()))
+
 			draw_colored_polygon(polygon, Color(1, 0, 0))
 
 func _process(delta):
@@ -117,11 +133,12 @@ func _physics_process(delta):
 				raycast_direction.dot(raycast_collision_normal)) * raycast_collision_normal
 			raycast2_origin = raycast_collision
 			var raycast2_pos = raycast2.get_position()
-			raycast2.set_global_position(raycast2_origin - Vector2(0.5, 0.5))
+			raycast2.set_global_position(raycast2_origin + raycast_collision_normal)
 			raycast2.set_cast_to(raycast2_direction * 10000 + raycast2_pos)
 			raycast2.force_raycast_update()
 			if raycast2.is_colliding():
 				raycast2_collision = raycast2.get_collision_point()
+				raycast2_collision_normal = raycast2.get_collision_normal()
 			else:
 				raycast2_collision = raycast2_origin + raycast2_direction * 10000
 		else:
