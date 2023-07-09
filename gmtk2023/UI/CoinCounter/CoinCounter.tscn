@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://UI/CoinCounter/CoinCounter.gd" type="Script" id=1]
-[ext_resource path="res://Objects/Coin/Assets/Coin.png" type="Texture" id=2]
+[ext_resource path="res://Objects/FoodBag/Assets/FoodBag.png" type="Texture" id=2]
 [ext_resource path="res://Fonts/yoster.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://UI/CoinCounter/Win.wav" type="AudioStream" id=4]
 
@@ -19,15 +19,11 @@ margin_right = -919.0
 margin_bottom = -567.0
 custom_colors/font_color = Color( 0.94902, 0.65098, 0.368627, 1 )
 custom_fonts/font = SubResource( 1 )
-text = "0 ] 0"
+text = "0 of 0 collected"
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -24, 16 )
-scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]

@@ -33,9 +33,15 @@ var collected_food = 0
 var DEBUG_MODE = true
 var WIN_TEXTS = [
 	"Congratulations! Fluffy isn't going to starve now :D",
-	"About damn time... Buckaroo hasn't eaten in AGES!",
+	"About time... Dr. Bojangles hasn't eaten in AGES!",
 	"FOODFOODFOODFOODFOODFOOD",
-	"cronching sounds commence"
+	"c r o n c h i n g",
+	"c r o n c h i n g  INTENSIFIES",
+	"Mrs. Meows appreciates you for all you do. /s",
+	"Milo needs to replenish all the calories spent sleeping.",
+	"The first kibble hadn't even hit the bowl before Oliver came running",
+	"How does Oreo know when it's an hour before my alarm is set to wake me up?",
+	"A CRASH and furious scampering noises immediately follow the sound of kibble on porcelain."
 ]
 var SCENES = [
 	"res://World/World1.tscn",

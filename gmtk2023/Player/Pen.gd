@@ -191,8 +191,8 @@ func _physics_process(delta):
 	if raycast.is_colliding():
 		raycast_info.terminus = raycast.get_collision_point()
 		raycast_info.collision_normal = raycast.get_collision_normal()
-		Global.print_val_every(60, "raycast collision point", raycast_info.terminus)
-		Global.print_val_every(60, "raycast collision normal", raycast_info.collision_normal)
+		#Global.print_val_every(60, "raycast collision point", raycast_info.terminus)
+		#Global.print_val_every(60, "raycast collision normal", raycast_info.collision_normal)
 		
 		if laser_on:
 			destination.position = raycast_info.terminus
@@ -202,7 +202,7 @@ func _physics_process(delta):
 			process_child_raycast(raycast2_info, raycast_info)
 	else:
 		raycast_info.terminus = get_global_transform().xform(raycast.get_cast_to())
-		Global.print_val_every(60, "raycast collision point", raycast_info.terminus)
+		#Global.print_val_every(60, "raycast collision point", raycast_info.terminus)
 	
 	update()
 

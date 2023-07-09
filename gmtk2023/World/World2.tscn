@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://World/Background.tres" type="TileSet" id=1]
 [ext_resource path="res://Objects/DeathTrigger/DeathTrigger.tscn" type="PackedScene" id=2]
+[ext_resource path="res://UI/CoinCounter/CoinCounter.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Player/Cat.tscn" type="PackedScene" id=5]
 [ext_resource path="res://World/AutoNav.gd" type="Script" id=6]
@@ -77,6 +78,8 @@ can_glide = false
 can_gravity = false
 
 [node name="UI" type="CanvasLayer" parent="."]
+
+[node name="CoinCounter" parent="UI" instance=ExtResource( 3 )]
 
 [node name="Label" parent="UI" instance=ExtResource( 15 )]
 anchor_top = 1.0

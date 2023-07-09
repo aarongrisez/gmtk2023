@@ -9,9 +9,9 @@ func _process(_delta):
 	update_text()
 
 func update_text():
-	text = str(Global.current_coins) + " ] " + str(Global.max_coins)
+	text = str(Global.current_food) + " of " + str(Global.max_food) + " collected"
 	
-	if Global.current_coins == Global.max_coins:
+	if Global.current_food == Global.max_food:
 		if completed:
 			return
 		completed = true
