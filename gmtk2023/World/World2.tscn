@@ -73,6 +73,10 @@ position = Vector2( 402, 209 )
 position = Vector2( 648, 284 )
 scale = Vector2( 2, 2 )
 
+[node name="Mirror2" parent="Objects" instance=ExtResource( 3 )]
+position = Vector2( 666, 148 )
+scale = Vector2( 2, 2 )
+
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 560, 280 )
 speed = 95

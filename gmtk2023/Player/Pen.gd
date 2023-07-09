@@ -17,22 +17,44 @@ class RaycastRenderInfo:
 	var prev_collision_hyp = 0
 	var is_active = false
 	var collision_hyp = 0
+	var child = null
+	var raycast = null
 	
-	func init(has_prev):
+	func init(has_prev, raycast, child):
 		self.has_prev = has_prev
+		self.raycast = raycast
+		self.child = child
 		return self
-
-var raycast_info = RaycastRenderInfo.new().init(false)
-var raycast2_info = RaycastRenderInfo.new().init(true)
+		
+	func deactivate_children():
+		if self.child != null:
+			self.child.is_active = false
+			self.child.deactivate_children()
 
 var movement_dir = Vector2(0, 0)
 var movement_speed = 200
 var movement_velocity = Vector2(0, 0)
 
-onready var raycast = get_tree().get_current_scene().find_node("RayCast2D")
-onready var raycast2 = get_tree().get_current_scene().find_node("RayCast2D2")
+onready var scene = get_tree().get_current_scene()
+onready var raycast = scene.find_node("RayCast2D")
+onready var raycast2 = scene.find_node("RayCast2D2")
+onready var raycast3 = scene.find_node("RayCast2D3")
+onready var raycast4 = scene.find_node("RayCast2D4")
+onready var raycast5 = scene.find_node("RayCast2D5")
+onready var raycast6 = scene.find_node("RayCast2D6")
+onready var raycast7 = scene.find_node("RayCast2D7")
+onready var raycast8 = scene.find_node("RayCast2D8")
 onready var destination = get_tree().get_current_scene().find_node("Destination")
 onready var catKinematicBody = get_tree().get_current_scene().find_node("Cat").find_node("KinematicBody2D")
+
+onready var raycast8_info = RaycastRenderInfo.new().init(true, raycast8, null)
+onready var raycast7_info = RaycastRenderInfo.new().init(true, raycast7, raycast8_info)
+onready var raycast6_info = RaycastRenderInfo.new().init(true, raycast6, raycast7_info)
+onready var raycast5_info = RaycastRenderInfo.new().init(true, raycast5, raycast6_info)
+onready var raycast4_info = RaycastRenderInfo.new().init(true, raycast4, raycast5_info)
+onready var raycast3_info = RaycastRenderInfo.new().init(true, raycast3, raycast4_info)
+onready var raycast2_info = RaycastRenderInfo.new().init(true, raycast2, raycast3_info)
+onready var raycast_info = RaycastRenderInfo.new().init(false, raycast, raycast2_info)
 
 func _ready():
 	pass # Replace with function body.
@@ -64,9 +86,7 @@ func render_raycast(raycast_render_info):
 		collision_hyp = -2 / cos(collision_angle)
 		polygon.push_back(to_local(terminus + collision_normal.rotated(3.14 / 2) * collision_hyp / 2))
 		polygon.push_back(to_local(terminus + collision_normal.rotated(-3.14 / 2) * collision_hyp / 2))
-	elif not has_prev:
-		polygon.push_back(to_local(terminus) + Vector2(-1, 0))
-		polygon.push_back(to_local(terminus) + Vector2(1, 0))
+		polygon.push_back(to_local(terminus + collision_normal.rotated(-3.14 / 2) * collision_hyp / 2))
 	else:
 		polygon.push_back(to_local(terminus + Vector2(-1, 0)))
 		polygon.push_back(to_local(terminus + Vector2(1, 0)))
@@ -74,15 +94,17 @@ func render_raycast(raycast_render_info):
 	draw_colored_polygon(polygon, Color(1, 0, 0))
 	
 	raycast_render_info.collision_hyp = collision_hyp
+	
+	var child = raycast_render_info.child
+	
+	if child != null and child.is_active:
+		child.prev_collision_normal = raycast_render_info.collision_normal
+		child.prev_collision_hyp = raycast_render_info.collision_hyp
+		render_raycast(child)
 
 func _draw():
 	if laser_on:
 		render_raycast(raycast_info)
-
-		if raycast2.is_enabled():
-			raycast2_info.prev_collision_normal = raycast_info.collision_normal
-			raycast2_info.prev_collision_hyp = raycast_info.collision_hyp
-			render_raycast(raycast2_info)
 
 func _process(delta):
 	pass
@@ -107,6 +129,28 @@ func print_val_once(name, val):
 func print_val_every(nframes, name, val):
 	if inc % nframes == 0:
 		print_val(name, val)
+		
+func process_child_raycast(raycast_info, prev_raycast_info):
+	raycast_info.is_active = true
+	var raycast = raycast_info.raycast
+	var prev_raycast_direction = (prev_raycast_info.terminus - prev_raycast_info.origin).normalized()
+	var raycast_direction = prev_raycast_direction - 2 * (
+		prev_raycast_direction.dot(prev_raycast_info.collision_normal)) * prev_raycast_info.collision_normal
+	raycast_info.origin = prev_raycast_info.terminus
+	var raycast_pos = raycast.get_position()
+	raycast.set_global_position(raycast_info.origin + prev_raycast_info.collision_normal)
+	raycast.set_cast_to(raycast_direction * 10000 + raycast_pos)
+	raycast.force_raycast_update()
+	raycast_info.is_colliding = raycast.is_colliding()
+	if raycast.is_colliding():
+		raycast_info.terminus = raycast.get_collision_point()
+		raycast_info.collision_normal = raycast.get_collision_normal()
+
+		var collider = raycast.get_collider()
+		if "Mirror" in collider.name and raycast_info.child != null:
+			process_child_raycast(raycast_info.child, raycast_info)
+	else:
+		raycast_info.terminus = raycast_info.origin + raycast_direction * 10000
 
 func _physics_process(delta):	
 	var nframes = 60
@@ -131,6 +175,8 @@ func _physics_process(delta):
 	movement_velocity.x = calc_velocity_dir(n_speed.x, movement_velocity.x)
 	movement_velocity.y = calc_velocity_dir(n_speed.y, movement_velocity.y)
 	catKinematicBody.move_and_slide(movement_velocity)
+	
+	raycast_info.deactivate_children()
 
 	raycast.force_raycast_update()
 	raycast_info.origin = raycast.get_global_position()
@@ -142,25 +188,8 @@ func _physics_process(delta):
 
 		var collider = raycast.get_collider()
 		if collider.name == "Mirror":
-			raycast2.set_enabled(true)
-			var raycast_direction = (raycast_info.terminus - raycast_info.origin).normalized()
-			var raycast2_direction = raycast_direction - 2 * (
-				raycast_direction.dot(raycast_info.collision_normal)) * raycast_info.collision_normal
-			raycast2_info.origin = raycast_info.terminus
-			var raycast2_pos = raycast2.get_position()
-			raycast2.set_global_position(raycast2_info.origin + raycast_info.collision_normal)
-			raycast2.set_cast_to(raycast2_direction * 10000 + raycast2_pos)
-			raycast2.force_raycast_update()
-			raycast2_info.is_colliding = raycast2.is_colliding()
-			if raycast2.is_colliding():
-				raycast2_info.terminus = raycast2.get_collision_point()
-				raycast2_info.collision_normal = raycast2.get_collision_normal()
-			else:
-				raycast2_info.terminus = raycast2_info.origin + raycast2_direction * 10000
-		else:
-			raycast2.set_enabled(false)
+			process_child_raycast(raycast2_info, raycast_info)
 	else:
-		raycast2.set_enabled(false)
 		raycast_info.terminus = get_global_transform().xform(raycast.get_cast_to())
 	
 	inc += 1
