@@ -7,13 +7,23 @@ export var turning = 1.0
 var laser_on = false
 var laser_strength = 0
 
-var raycast_origin = Vector2(0, 0)
-var raycast_collision = Vector2(0, 0)
-var raycast_collision_normal = Vector2(0, 0)
-var raycast_mirrored = false
-var raycast2_origin = Vector2(0, 0)
-var raycast2_collision = Vector2(0, 0)
-var raycast2_collision_normal = Vector2(0, 0)
+class RaycastRenderInfo:
+	var origin = Vector2(0, 0)
+	var terminus = Vector2(0, 0)
+	var is_colliding = false
+	var has_prev = false
+	var collision_normal = Vector2(0, 0)
+	var prev_collision_normal = Vector2(0, 0)
+	var prev_collision_hyp = 0
+	var is_active = false
+	var collision_hyp = 0
+	
+	func init(has_prev):
+		self.has_prev = has_prev
+		return self
+
+var raycast_info = RaycastRenderInfo.new().init(false)
+var raycast2_info = RaycastRenderInfo.new().init(true)
 
 var movement_dir = Vector2(0, 0)
 var movement_speed = 200
@@ -26,49 +36,53 @@ onready var catKinematicBody = get_tree().get_current_scene().find_node("Cat").f
 
 func _ready():
 	pass # Replace with function body.
+
+func render_raycast(raycast_render_info):
+	var origin = raycast_render_info.origin
+	var terminus = raycast_render_info.terminus
+	var is_colliding = raycast_render_info.is_colliding
+	var has_prev = raycast_render_info.has_prev
+	var collision_normal = raycast_render_info.collision_normal
+	var prev_collision_normal = raycast_render_info.prev_collision_normal
+	var prev_collision_hyp = raycast_render_info.prev_collision_hyp
+	var is_active = raycast_render_info.is_active
 	
+	var polygon = PoolVector2Array()
+	var direction = (terminus - origin).normalized()
+	var collision_angle = 0
+	var collision_hyp = 0
+	
+	if not has_prev:
+		polygon.push_back(to_local(origin) + Vector2(-1, 0))
+		polygon.push_back(to_local(origin) + Vector2(1, -0.5))
+	else:
+		polygon.push_back(to_local(origin + prev_collision_normal.rotated(3.14 / 2) * prev_collision_hyp / 2))
+		polygon.push_back(to_local(origin + prev_collision_normal.rotated(-3.14 / 2) * prev_collision_hyp / 2))
+
+	if is_colliding:
+		collision_angle = acos(direction.dot(collision_normal))
+		collision_hyp = -2 / cos(collision_angle)
+		polygon.push_back(to_local(terminus + collision_normal.rotated(3.14 / 2) * collision_hyp / 2))
+		polygon.push_back(to_local(terminus + collision_normal.rotated(-3.14 / 2) * collision_hyp / 2))
+	elif not has_prev:
+		polygon.push_back(to_local(terminus) + Vector2(-1, 0))
+		polygon.push_back(to_local(terminus) + Vector2(1, 0))
+	else:
+		polygon.push_back(to_local(terminus + Vector2(-1, 0)))
+		polygon.push_back(to_local(terminus + Vector2(1, 0)))
+		
+	draw_colored_polygon(polygon, Color(1, 0, 0))
+	
+	raycast_render_info.collision_hyp = collision_hyp
+
 func _draw():
 	if laser_on:
-		var polygon = PoolVector2Array()
-		var raycast_direction = (raycast_collision - raycast_origin).normalized()
-		var raycast_collision_angle = 0
-		var raycast_collision_hyp = 0
-		
-		polygon.push_back(to_local(raycast_origin) + Vector2(-1, 0))
-		polygon.push_back(to_local(raycast_origin) + Vector2(1, -0.5))
-		
-		if raycast.is_colliding():
-			raycast_collision_angle = acos(raycast_direction.dot(raycast_collision_normal))
-			raycast_collision_hyp = -2 / cos(raycast_collision_angle)
-			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(3.14 / 2) * raycast_collision_hyp / 2))
-			polygon.push_back(to_local(raycast_collision + raycast_collision_normal.rotated(-3.14 / 2) * raycast_collision_hyp / 2))
-		else:
-			polygon.push_back(to_local(raycast_collision) + Vector2(1, 0))
-			polygon.push_back(to_local(raycast_collision) + Vector2(-1, 0))
-
-		draw_colored_polygon(polygon, Color(1, 0, 0))
+		render_raycast(raycast_info)
 
 		if raycast2.is_enabled():
-			polygon = PoolVector2Array()
-			var raycast2_direction = (raycast2_collision - raycast2_origin).normalized()
-			var raycast2_collision_angle = 0
-			var raycast2_collision_hyp = 0
-
-			polygon.push_back(to_local(raycast2_origin + raycast_collision_normal.rotated(-3.14 / 2) * raycast_collision_hyp / 2))
-			polygon.push_back(to_local(raycast2_origin + raycast_collision_normal.rotated(3.14 / 2) * raycast_collision_hyp / 2))
-			
-			if raycast2.is_colliding():
-				raycast2_collision_angle = acos(raycast2_direction.dot(raycast2_collision_normal))
-				raycast2_collision_hyp = -2 / cos(raycast2_collision_angle)
-				print(raycast2_collision_angle)
-				print(raycast2_collision_hyp)
-				polygon.push_back(to_local(raycast2_collision + raycast2_collision_normal.rotated(-3.14 / 2) * raycast2_collision_hyp / 2))
-				polygon.push_back(to_local(raycast2_collision + raycast2_collision_normal.rotated(3.14 / 2) * raycast2_collision_hyp / 2))
-			else:
-				polygon.push_back(to_local(raycast2_collision + Vector2(1, 0) / get_scale()))
-				polygon.push_back(to_local(raycast2_collision + Vector2(-1, 0) / get_scale()))
-
-			draw_colored_polygon(polygon, Color(1, 0, 0))
+			raycast2_info.prev_collision_normal = raycast_info.collision_normal
+			raycast2_info.prev_collision_hyp = raycast_info.collision_hyp
+			render_raycast(raycast2_info)
 
 func _process(delta):
 	pass
@@ -101,7 +115,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed('ui_laser'):
 		laser_on = true
 		laser_strength = 1
-		destination.position = raycast_collision
+		destination.position = raycast_info.terminus
 	if Input.is_action_just_released("ui_laser"):
 		laser_on = false
 	if Input.is_action_pressed('ui_left'):
@@ -119,33 +133,35 @@ func _physics_process(delta):
 	catKinematicBody.move_and_slide(movement_velocity)
 
 	raycast.force_raycast_update()
-	raycast_origin = raycast.get_global_position()
+	raycast_info.origin = raycast.get_global_position()
+	raycast_info.is_colliding = raycast.is_colliding()
 	
 	if raycast.is_colliding():
-		raycast_collision = raycast.get_collision_point()
-		raycast_collision_normal = raycast.get_collision_normal()
+		raycast_info.terminus = raycast.get_collision_point()
+		raycast_info.collision_normal = raycast.get_collision_normal()
 
 		var collider = raycast.get_collider()
 		if collider.name == "Mirror":
 			raycast2.set_enabled(true)
-			var raycast_direction = (raycast_collision - raycast_origin).normalized()
+			var raycast_direction = (raycast_info.terminus - raycast_info.origin).normalized()
 			var raycast2_direction = raycast_direction - 2 * (
-				raycast_direction.dot(raycast_collision_normal)) * raycast_collision_normal
-			raycast2_origin = raycast_collision
+				raycast_direction.dot(raycast_info.collision_normal)) * raycast_info.collision_normal
+			raycast2_info.origin = raycast_info.terminus
 			var raycast2_pos = raycast2.get_position()
-			raycast2.set_global_position(raycast2_origin + raycast_collision_normal)
+			raycast2.set_global_position(raycast2_info.origin + raycast_info.collision_normal)
 			raycast2.set_cast_to(raycast2_direction * 10000 + raycast2_pos)
 			raycast2.force_raycast_update()
+			raycast2_info.is_colliding = raycast2.is_colliding()
 			if raycast2.is_colliding():
-				raycast2_collision = raycast2.get_collision_point()
-				raycast2_collision_normal = raycast2.get_collision_normal()
+				raycast2_info.terminus = raycast2.get_collision_point()
+				raycast2_info.collision_normal = raycast2.get_collision_normal()
 			else:
-				raycast2_collision = raycast2_origin + raycast2_direction * 10000
+				raycast2_info.terminus = raycast2_info.origin + raycast2_direction * 10000
 		else:
 			raycast2.set_enabled(false)
 	else:
 		raycast2.set_enabled(false)
-		raycast_collision = get_global_transform().xform(raycast.get_cast_to())
+		raycast_info.terminus = get_global_transform().xform(raycast.get_cast_to())
 	
 	inc += 1
 	update()
