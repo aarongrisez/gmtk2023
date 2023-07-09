@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="Mrs. Meow's Attention Time"
+config/name="Laser Focused"
 run/main_scene="res://UI/Menu.tscn"
 boot_splash/image="res://UI/Black.png"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
