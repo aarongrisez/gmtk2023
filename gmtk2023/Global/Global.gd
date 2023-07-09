@@ -45,6 +45,7 @@ var SCENES = [
 	"res://World/World5.tscn",
 	"res://World/World5a.tscn",
 	"res://World/World5b.tscn",
+	"res://World/World6.tscn",
 	"res://UI/GameOver.tscn"
 ]
 
