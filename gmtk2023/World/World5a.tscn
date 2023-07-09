@@ -137,7 +137,6 @@ anims/world-5a-platform-1 = SubResource( 3 )
 anims/world-5a-platform-2 = SubResource( 2 )
 
 [node name="MovingPlatform2" parent="Objects" instance=ExtResource( 14 )]
-position = Vector2( 625, 239 )
 scale = Vector2( 1.00108, 0.992154 )
 currentAnimation = "world-5a-platform-2"
 

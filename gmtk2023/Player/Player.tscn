@@ -80,12 +80,6 @@ one_shot = true
 
 [node name="ForceJump" type="Timer" parent="."]
 
-[node name="Label" type="Label" parent="."]
-margin_left = -588.0
-margin_top = -82.0
-margin_right = -484.0
-margin_bottom = -49.0
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2( 0.4, 0.4 )
 drag_margin_h_enabled = true

@@ -2,7 +2,7 @@ extends Sprite
 
 var MIN_ROTATION = -0.950007
 var MAX_ROTATION = 0.965705
-var MIN_ZOOM = 0.25
+var MIN_ZOOM = 0.30
 var MAX_ZOOM = 0.50
 var speed = 250
 export var turning = 1.0
@@ -159,13 +159,12 @@ func _physics_process(delta):
 		if current_zoom.x < MAX_ZOOM:
 			camera.zoom.x += 0.01
 			camera.zoom.y += 0.01
-			camera.offset = Vector2(100, 50) - ((camera.zoom.x / MIN_ZOOM) - 1) * add_offset
+
 	if Input.is_action_pressed('ui_up'):
 		if current_zoom.y > MIN_ZOOM:
 			camera.zoom.x -= 0.01
 			camera.zoom.y -= 0.01
-			camera.offset = Vector2(100, 50) - ((camera.zoom.x / MIN_ZOOM) - 1) * add_offset
-
+	camera.offset = Vector2(100, 50) - ((camera.zoom.x / MIN_ZOOM) - 1) * add_offset
 	movement_dir = Input.get_vector("left","right","up","down")
 
 	var gas_left = Input.get_action_strength("left")

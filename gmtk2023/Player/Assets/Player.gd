@@ -64,7 +64,6 @@ func _ready():
 	tilemap = get_tree().get_current_scene().find_node("WorldMap")
 
 func _process(_delta):
-	$Label.text = STATES.keys()[state]# + " -- " + str(rotation_degrees)
 	update()
 
 func _physics_process(delta):
