@@ -1,11 +1,10 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Fonts/yoster.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://UI/Transition/Transition.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/DeathTrigger/DeathTrigger.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://UI/DialogBox/DialogBox.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Objects/Coin/Coin.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Objects/Teleporter/TeleporterArea.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Objects/GravityArea/GravityArea.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Objects/Trampoline/Trampoline.tscn" type="PackedScene" id=9]
@@ -190,10 +189,6 @@ scale = Vector2( 11, 5 )
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="Coin" parent="Objects/Planet" instance=ExtResource( 6 )]
-position = Vector2( 1096, 136 )
-scale = Vector2( 1, -1 )
 
 [node name="Danger" parent="Objects" instance=ExtResource( 10 )]
 position = Vector2( 344, 512 )
