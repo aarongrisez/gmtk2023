@@ -49,6 +49,7 @@ onready var raycast8 = scene.find_node("RayCast2D8")
 onready var destination = scene.find_node("Destination")
 onready var catKinematicBody = scene.find_node("Cat").find_node("KinematicBody2D")
 onready var camera = catKinematicBody.find_node("Camera2D")
+onready var tilemap = scene.find_node("WorldMap")
 
 onready var raycast8_info = RaycastRenderInfo.new().init(true, raycast8, null)
 onready var raycast7_info = RaycastRenderInfo.new().init(true, raycast7, raycast8_info)
@@ -113,6 +114,17 @@ func _draw():
 
 func _process(delta):
 	pass
+	
+func is_reflective(collider, raycast):
+	if "Mirror" in collider.name:
+		return true
+		
+	if "WorldMap" in collider.name:
+		var collision_point = raycast.get_collision_point()
+		if tilemap.get_cellv(tilemap.world_to_map(collision_point)) == 11:
+			return true
+		
+	return false
 		
 func process_child_raycast(raycast_info, prev_raycast_info):
 	raycast_info.is_active = true
@@ -134,7 +146,7 @@ func process_child_raycast(raycast_info, prev_raycast_info):
 			destination.position = raycast_info.terminus
 
 		var collider = raycast.get_collider()
-		if "Mirror" in collider.name and raycast_info.child != null:
+		if is_reflective(collider, raycast) and raycast_info.child != null:
 			process_child_raycast(raycast_info.child, raycast_info)
 	else:
 		raycast_info.terminus = raycast_info.origin + raycast_direction * 10000
@@ -198,7 +210,7 @@ func _physics_process(delta):
 			destination.position = raycast_info.terminus
 
 		var collider = raycast.get_collider()
-		if "Mirror" in collider.name:
+		if is_reflective(collider, raycast):
 			process_child_raycast(raycast2_info, raycast_info)
 	else:
 		raycast_info.terminus = get_global_transform().xform(raycast.get_cast_to())
