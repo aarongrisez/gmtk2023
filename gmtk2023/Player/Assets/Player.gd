@@ -53,18 +53,25 @@ var boost_normal = Vector2()
 var boost_strength = speed*4
 var boost_duration = 0
 
-enum STATES {Idle, Walk, Jump, Fall, Climb, Glide}
+enum STATES {Idle, Walk, Jump, Fall, Climb, Glide, Slide}
 var state = STATES.Idle
 var last_state = state
+var is_test_world = false
 
 func get_jump_max_reach():
 	return 60
 
 func _ready():
+	var scene_name = get_tree().get_current_scene().name
+	is_test_world = (scene_name == "PlayerTestWorld")
 	tilemap = get_tree().get_current_scene().find_node("WorldMap")
 
 func _process(_delta):
+	if is_test_world:
+		get_input()
 	update()
+	
+var was_on_ice
 
 func _physics_process(delta):
 	last_state = state
@@ -76,12 +83,25 @@ func _physics_process(delta):
 	#Speed Smoothing
 	var n_speed = speed * movement_dir
 	
+	var is_on_ice = false
+	
 	if is_on_floor():
+		var tile_below = tilemap.world_to_map(get_global_position()) + Vector2(0, 1)
+		is_on_ice = (tilemap.get_cellv(tile_below) == 11)
+		if is_on_ice and not was_on_ice:
+			velocity.x *= 0.1
+
 		if abs(n_speed) > abs(velocity.x):
-			velocity.x = (5*velocity.x + n_speed)/6
+			var denom = 6
+			if is_on_ice:
+				denom = 60
+			velocity.x = ((denom - 1) * velocity.x + n_speed) / denom
 		else:
 			if abs(velocity.x) > 5:
-				velocity.x = (3*velocity.x + n_speed)/4
+				var denom = 4
+				if is_on_ice:
+					denom = 40
+				velocity.x = ((denom - 1) * velocity.x + n_speed) / denom
 			else:
 				velocity.x = 0
 	elif state == STATES.Glide:
@@ -169,8 +189,13 @@ func _physics_process(delta):
 	calculate_gravity_normal()
 	var grav_rot = gravity_normal.angle_to(Vector2(0,1))
 	velocity = move_and_slide_with_snap(velocity.rotated(-grav_rot),gravity_normal*snap,-gravity_normal,true,4,deg2rad(80)).rotated(grav_rot)
+	
+	was_on_ice = is_on_ice
 
-func get_input(): 
+func get_input():
+	if is_test_world:
+		movement_dir = Input.get_vector("left","right","null","null").x
+
 	if Input.is_action_just_pressed("left") || Input.is_action_just_pressed("right") :
 		# -90 bis 90 normal
 		if rotation_degrees > 92 || (rotation_degrees < -92 && rotation_degrees > -200):
