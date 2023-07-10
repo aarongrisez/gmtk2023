@@ -64,6 +64,10 @@ func get_jump_max_reach():
 func _ready():
 	var scene_name = get_tree().get_current_scene().name
 	is_test_world = (scene_name == "PlayerTestWorld")
+	if is_test_world:
+		var camera = find_node("Camera2D")
+		camera.current = true
+
 	tilemap = get_tree().get_current_scene().find_node("WorldMap")
 
 func _process(_delta):
