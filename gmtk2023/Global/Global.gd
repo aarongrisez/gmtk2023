@@ -63,30 +63,28 @@ func init_scene_map():
 var scene_map = init_scene_map()
 
 var rng = RandomNumberGenerator.new()
-var current_scene = ""
+var current_world = "res://World/World5a.tscn"
 
 func reset_counters():
 	max_food = 0
 	max_dish = 0
 	current_food = 0
 	collected_food = 0
+	
+func get_current_world():
+	return current_world
 
 func transition_next_scene():
 	reset_counters()
 	
-	if get_tree().get_current_scene().name == "ViewportController":
-		current_scene = get_tree().get_current_scene().get_current_world()
-		current_scene = scene_map[current_scene]
-	else:
-		current_scene = scene_map[current_scene]
-
-	if "World" in current_scene:
+	current_world = scene_map[current_world]
+	if "World" in current_world:
 		if (get_tree().get_current_scene().name != "ViewportController"):
 			get_tree().change_scene("res://World/Viewports.tscn")
 
-		get_tree().get_current_scene().set_world(current_scene)
+		get_tree().get_current_scene().set_world(current_world)
 	else:
-		get_tree().change_scene(current_scene)
+		get_tree().change_scene(current_world)
 
 var currently_notifying = false
 
@@ -125,4 +123,3 @@ func restart_game():
 	text_box = ""
 	
 	var _error = get_tree().reload_current_scene()
-	get_tree().get_current_scene().set_world(SCENES[current_scene])

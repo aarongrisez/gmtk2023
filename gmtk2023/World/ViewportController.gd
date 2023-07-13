@@ -10,19 +10,18 @@ onready var player_camera = $PlayerViewportContainer/PlayerViewport/PlayerCamera
 var cat = null
 var player = null
 
-var current_world_path = ""
-
 func set_remote_transform(camera, body):
 	var remote_transform = RemoteTransform2D.new()
 	remote_transform.remote_path = camera.get_path()
 	body.add_child(remote_transform)
 
 func set_world(world_scene):
-	current_world_path = world_scene
-
 	var current_world = cat_viewport.find_node("World")
 	if current_world != null:
 		cat_viewport.remove_child(current_world)
+		
+	if world_scene == "":
+		return
 
 	world_scene = load(world_scene).instance()
 	cat_viewport.add_child(world_scene)
@@ -30,14 +29,11 @@ func set_world(world_scene):
 	player_viewport.world_2d = cat_viewport.world_2d
 	
 	first_process = true
-	
-func get_current_world():
-	return current_world_path
 
 func _ready():
-	set_world("res://World/World6.tscn")
+	set_world(Global.get_current_world())
 	
-var first_process = true
+var first_process = false
 
 func _process(delta):
 	if first_process:
