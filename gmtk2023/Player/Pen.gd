@@ -43,7 +43,6 @@ func init_raycasts():
 	var i = 1
 	while i <= 8:
 		var raycast = scene.find_node("RayCast2D%d" % i)
-		print(raycast)
 		raycasts.append(raycast)
 		i += 1
 		
@@ -56,7 +55,6 @@ func init_raycast_infos():
 		raycast_infos.append(RaycastRenderInfo.new().init(i != 1, raycasts[i - 1], raycast_infos[-1]))
 		i -= 1
 	raycast_infos.invert()
-	print(raycast_infos)
 	return raycast_infos
 	
 onready var raycasts = init_raycasts()
