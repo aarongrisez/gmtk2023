@@ -63,6 +63,9 @@ var state = STATES.Idle
 var last_state = state
 var is_test_world = false
 
+var viewport = null
+var viewport_rect = null
+
 func get_jump_max_reach():
 	return 60
 
@@ -81,19 +84,22 @@ func _ready():
 		camera.current = true
 	elif cat != null:
 		cat_camera = scene.find_node("CatCamera")
+		viewport = cat_camera.get_viewport()
+		viewport_rect = cat_camera.get_viewport_rect()
+		
+func maybe_enable_player_viewport():
+	if cat_camera != null and player_viewport != null:
+		var global_to_viewport = viewport.global_canvas_transform * cat_camera.get_canvas_transform()
+		var viewport_to_global = global_to_viewport.affine_inverse()
+		var viewport_rect_global = viewport_to_global.xform(viewport_rect)
+		player_viewport.visible = not viewport_rect_global.has_point(get_global_position())
 
 func _process(_delta):
 	if is_test_world:
 		get_input()
 	update()
 	
-	if cat_camera != null and player_viewport != null:
-		var viewport = cat_camera.get_viewport()
-		var viewport_rect = cat_camera.get_viewport_rect()
-		var global_to_viewport = viewport.global_canvas_transform * cat_camera.get_canvas_transform()
-		var viewport_to_global = global_to_viewport.affine_inverse()
-		var viewport_rect_global = viewport_to_global.xform(viewport_rect)
-		player_viewport.visible = not viewport_rect_global.has_point(get_global_position())
+	maybe_enable_player_viewport()
 	
 var was_on_ice
 
