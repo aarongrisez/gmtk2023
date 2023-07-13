@@ -54,8 +54,16 @@ var SCENES = [
 	"res://UI/GameOver.tscn"
 ]
 
+func init_scene_map():
+	var scene_map = {"": SCENES[0]}
+	for i in range(len(SCENES) - 1):
+		scene_map[SCENES[i]] = SCENES[i + 1]
+	return scene_map
+
+var scene_map = init_scene_map()
+
 var rng = RandomNumberGenerator.new()
-var current_scene = 0
+var current_scene = ""
 
 func reset_counters():
 	max_food = 0
@@ -65,9 +73,20 @@ func reset_counters():
 
 func transition_next_scene():
 	reset_counters()
-	current_scene += 1
-	if current_scene < len(SCENES):
-		get_tree().change_scene(SCENES[current_scene])
+	
+	if get_tree().get_current_scene().name == "ViewportController":
+		current_scene = get_tree().get_current_scene().get_current_world()
+		current_scene = scene_map[current_scene]
+	else:
+		current_scene = scene_map[current_scene]
+
+	if "World" in current_scene:
+		if (get_tree().get_current_scene().name != "ViewportController"):
+			get_tree().change_scene("res://World/Viewports.tscn")
+
+		get_tree().get_current_scene().set_world(current_scene)
+	else:
+		get_tree().change_scene(current_scene)
 
 var currently_notifying = false
 
@@ -106,3 +125,4 @@ func restart_game():
 	text_box = ""
 	
 	var _error = get_tree().reload_current_scene()
+	get_tree().get_current_scene().set_world(SCENES[current_scene])

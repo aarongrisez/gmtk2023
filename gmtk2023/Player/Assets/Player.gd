@@ -10,7 +10,12 @@ onready var sensors = $sensors
 onready var _blocker_detection_direction = $sensors/lower.cast_to.x
 onready var _edge_detection_position = $sensors/edge.position.x
 
+onready var scene = get_tree().get_current_scene() # ViewportController OR PlayerTestWorld
+onready var world = find_parent("World") # WorldN
+onready var player_viewport = scene.find_node("PlayerViewportContainer")
 var tilemap = null
+var cat = null
+var cat_camera = null
 
 export var speed = 200
 
@@ -62,18 +67,33 @@ func get_jump_max_reach():
 	return 60
 
 func _ready():
-	var scene_name = get_tree().get_current_scene().name
-	is_test_world = (scene_name == "PlayerTestWorld")
+	var world_name = scene.name
+	if world != null:
+		tilemap = world.find_node("WorldMap")
+		cat = world.find_node("Cat")
+		world_name = world.name
+	else:
+		tilemap = scene.find_node("WorldMap")
+
+	is_test_world = (world_name == "PlayerTestWorld")
 	if is_test_world:
 		var camera = find_node("Camera2D")
 		camera.current = true
-
-	tilemap = get_tree().get_current_scene().find_node("WorldMap")
+	elif cat != null:
+		cat_camera = scene.find_node("CatCamera")
 
 func _process(_delta):
 	if is_test_world:
 		get_input()
 	update()
+	
+	if cat_camera != null and player_viewport != null:
+		var viewport = cat_camera.get_viewport()
+		var viewport_rect = cat_camera.get_viewport_rect()
+		var global_to_viewport = viewport.global_canvas_transform * cat_camera.get_canvas_transform()
+		var viewport_to_global = global_to_viewport.affine_inverse()
+		var viewport_rect_global = viewport_to_global.xform(viewport_rect)
+		player_viewport.visible = not viewport_rect_global.has_point(get_global_position())
 	
 var was_on_ice
 

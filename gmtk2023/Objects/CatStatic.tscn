@@ -20,12 +20,8 @@ collision_layer = 4
 
 [node name="Cat-neutral" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
+frame = 1
 playing = true
-
-[node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2( 100, 50 )
-current = true
-zoom = Vector2( 0.4, 0.4 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2( 7.96652, 5.86203 )

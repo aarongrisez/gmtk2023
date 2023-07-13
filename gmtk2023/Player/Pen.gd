@@ -2,8 +2,6 @@ extends Sprite
 
 var MIN_ROTATION = -0.950007
 var MAX_ROTATION = 0.965705
-var MIN_ZOOM = 0.30
-var MAX_ZOOM = 0.50
 var speed = 250
 export var turning = 1.0
 var laser_on = false
@@ -37,7 +35,7 @@ var movement_dir = Vector2(0, 0)
 var movement_speed = 200
 var movement_velocity = Vector2(0, 0)
 
-onready var scene = get_tree().get_current_scene()
+onready var scene = find_parent("World")
 onready var raycast = scene.find_node("RayCast2D")
 onready var raycast2 = scene.find_node("RayCast2D2")
 onready var raycast3 = scene.find_node("RayCast2D3")
@@ -47,8 +45,7 @@ onready var raycast6 = scene.find_node("RayCast2D6")
 onready var raycast7 = scene.find_node("RayCast2D7")
 onready var raycast8 = scene.find_node("RayCast2D8")
 onready var destination = scene.find_node("Destination")
-onready var catKinematicBody = scene.find_node("Cat").find_node("KinematicBody2D")
-onready var camera = catKinematicBody.find_node("Camera2D")
+var catKinematicBody = null
 onready var tilemap = scene.find_node("WorldMap")
 
 onready var raycast8_info = RaycastRenderInfo.new().init(true, raycast8, null)
@@ -61,6 +58,7 @@ onready var raycast2_info = RaycastRenderInfo.new().init(true, raycast2, raycast
 onready var raycast_info = RaycastRenderInfo.new().init(false, raycast, raycast2_info)
 
 func _ready():
+	catKinematicBody = scene.find_node("Cat").find_node("KinematicBody2D")
 	pass # Replace with function body.
 
 func render_raycast(raycast_render_info):
@@ -166,20 +164,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed('ui_right'):
 		if current_rotation > MIN_ROTATION:
 			catKinematicBody.rotation -= turning * delta
-			
-	
-	var add_offset = Vector2(-120, -70)		
-	var current_zoom = camera.zoom
-	if Input.is_action_pressed('ui_down'):
-		if current_zoom.x < MAX_ZOOM:
-			camera.zoom.x += 0.01
-			camera.zoom.y += 0.01
 
-	if Input.is_action_pressed('ui_up'):
-		if current_zoom.y > MIN_ZOOM:
-			camera.zoom.x -= 0.01
-			camera.zoom.y -= 0.01
-	camera.offset = Vector2(100, 50) - ((camera.zoom.x / MIN_ZOOM) - 1) * add_offset
 	movement_dir = Input.get_vector("left","right","up","down")
 
 	var gas_left = Input.get_action_strength("left")

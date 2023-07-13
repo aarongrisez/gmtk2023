@@ -1,7 +1,8 @@
 extends Navigation2D
 
-onready var player = get_tree().get_current_scene().find_node("Player")
-onready var destination = get_tree().get_current_scene().find_node("Destination")
+onready var scene = find_parent("World")
+onready var player = scene.find_node("Player")
+onready var destination = scene.find_node("Destination")
 
 var _current_path = []
 var _platform_path = []
