@@ -63,7 +63,7 @@ func init_scene_map():
 var scene_map = init_scene_map()
 
 var rng = RandomNumberGenerator.new()
-var current_world = "res://World/World5a.tscn"
+var current_world = "res://World/World1.tscn"
 
 func reset_counters():
 	max_food = 0

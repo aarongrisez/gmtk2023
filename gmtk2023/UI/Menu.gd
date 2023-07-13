@@ -16,4 +16,4 @@ func _on_Load_timeout():
 	Global.current_food = 0
 	Global.collected_food = 0
 	Global.block_switch = true
-	var _error = get_tree().change_scene("res://World/World1.tscn")
+	var _error = get_tree().change_scene("res://World/Viewports.tscn")
