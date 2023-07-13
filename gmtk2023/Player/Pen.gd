@@ -36,26 +36,35 @@ var movement_speed = 200
 var movement_velocity = Vector2(0, 0)
 
 onready var scene = find_parent("World")
-onready var raycast = scene.find_node("RayCast2D")
-onready var raycast2 = scene.find_node("RayCast2D2")
-onready var raycast3 = scene.find_node("RayCast2D3")
-onready var raycast4 = scene.find_node("RayCast2D4")
-onready var raycast5 = scene.find_node("RayCast2D5")
-onready var raycast6 = scene.find_node("RayCast2D6")
-onready var raycast7 = scene.find_node("RayCast2D7")
-onready var raycast8 = scene.find_node("RayCast2D8")
+
+func init_raycasts():
+	var raycasts = []
+
+	var i = 1
+	while i <= 8:
+		var raycast = scene.find_node("RayCast2D%d" % i)
+		print(raycast)
+		raycasts.append(raycast)
+		i += 1
+		
+	return raycasts
+	
+func init_raycast_infos():
+	var raycast_infos = [RaycastRenderInfo.new().init(true, raycasts[-1], null)]
+	var i = 7
+	while i >= 1:
+		raycast_infos.append(RaycastRenderInfo.new().init(i != 1, raycasts[i - 1], raycast_infos[-1]))
+		i -= 1
+	raycast_infos.invert()
+	print(raycast_infos)
+	return raycast_infos
+	
+onready var raycasts = init_raycasts()
+onready var raycast_infos = init_raycast_infos()
+
 onready var destination = scene.find_node("Destination")
 var catKinematicBody = null
 onready var tilemap = scene.find_node("WorldMap")
-
-onready var raycast8_info = RaycastRenderInfo.new().init(true, raycast8, null)
-onready var raycast7_info = RaycastRenderInfo.new().init(true, raycast7, raycast8_info)
-onready var raycast6_info = RaycastRenderInfo.new().init(true, raycast6, raycast7_info)
-onready var raycast5_info = RaycastRenderInfo.new().init(true, raycast5, raycast6_info)
-onready var raycast4_info = RaycastRenderInfo.new().init(true, raycast4, raycast5_info)
-onready var raycast3_info = RaycastRenderInfo.new().init(true, raycast3, raycast4_info)
-onready var raycast2_info = RaycastRenderInfo.new().init(true, raycast2, raycast3_info)
-onready var raycast_info = RaycastRenderInfo.new().init(false, raycast, raycast2_info)
 
 func _ready():
 	catKinematicBody = scene.find_node("Cat").find_node("KinematicBody2D")
@@ -108,7 +117,7 @@ func render_raycast(raycast_render_info):
 
 func _draw():
 	if laser_on:
-		render_raycast(raycast_info)
+		render_raycast(raycast_infos[0])
 
 func _process(delta):
 	pass
@@ -179,26 +188,26 @@ func _physics_process(delta):
 	movement_velocity.y = calc_velocity_dir(n_speed.y, movement_velocity.y)
 	catKinematicBody.move_and_slide(movement_velocity)
 	
-	raycast_info.deactivate_children()
+	raycast_infos[0].deactivate_children()
 
-	raycast.force_raycast_update()
-	raycast_info.origin = raycast.get_global_position()
-	raycast_info.is_colliding = raycast.is_colliding()
+	raycasts[0].force_raycast_update()
+	raycast_infos[0].origin = raycasts[0].get_global_position()
+	raycast_infos[0].is_colliding = raycasts[0].is_colliding()
 	
-	if raycast.is_colliding():
-		raycast_info.terminus = raycast.get_collision_point()
-		raycast_info.collision_normal = raycast.get_collision_normal()
+	if raycasts[0].is_colliding():
+		raycast_infos[0].terminus = raycasts[0].get_collision_point()
+		raycast_infos[0].collision_normal = raycasts[0].get_collision_normal()
 		#Global.print_val_every(60, "raycast collision point", raycast_info.terminus)
 		#Global.print_val_every(60, "raycast collision normal", raycast_info.collision_normal)
 		
 		if laser_on:
-			destination.position = raycast_info.terminus
+			destination.position = raycast_infos[0].terminus
 
-		var collider = raycast.get_collider()
-		if is_reflective(collider, raycast):
-			process_child_raycast(raycast2_info, raycast_info)
+		var collider = raycasts[0].get_collider()
+		if is_reflective(collider, raycasts[0]):
+			process_child_raycast(raycast_infos[1], raycast_infos[0])
 	else:
-		raycast_info.terminus = get_global_transform().xform(raycast.get_cast_to())
+		raycast_infos[0].terminus = get_global_transform().xform(raycasts[0].get_cast_to())
 		#Global.print_val_every(60, "raycast collision point", raycast_info.terminus)
 	
 	update()
