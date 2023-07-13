@@ -101,7 +101,7 @@ func _process(_delta):
 	
 	maybe_enable_player_viewport()
 	
-var was_on_ice
+var was_on_ice = false
 
 func _physics_process(delta):
 	last_state = state

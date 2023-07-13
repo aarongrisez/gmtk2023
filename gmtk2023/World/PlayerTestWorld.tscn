@@ -1,6 +1,5 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://Fonts/yoster.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://UI/Transition/Transition.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/DeathTrigger/DeathTrigger.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=4]
@@ -14,64 +13,10 @@
 [ext_resource path="res://Objects/BlockSwitch/Switch.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Objects/Wind/Wind.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Objects/Swing/Swing.tscn" type="PackedScene" id=15]
-[ext_resource path="res://World/Congrulations.gd" type="Script" id=16]
 [ext_resource path="res://World/World.gd" type="Script" id=17]
 [ext_resource path="res://World/Background.tres" type="TileSet" id=18]
 [ext_resource path="res://World/Foreground.tres" type="TileSet" id=19]
 [ext_resource path="res://Objects/Teleporter/Assets/Door.png" type="Texture" id=20]
-
-[sub_resource type="DynamicFont" id=13]
-size = 72
-outline_size = 1
-font_data = ExtResource( 1 )
-
-[sub_resource type="Animation" id=14]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/path = NodePath(".:rect_scale:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
-}
-tracks/1/type = "bezier"
-tracks/1/path = NodePath(".:rect_scale:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
-}
-
-[sub_resource type="Animation" id=15]
-resource_name = "Wobble"
-length = 4.0
-loop = true
-tracks/0/type = "bezier"
-tracks/0/path = NodePath(".:rect_scale:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1.2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 2, 4 )
-}
-tracks/1/type = "bezier"
-tracks/1/path = NodePath(".:rect_scale:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1.2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 2, 4 )
-}
 
 [node name="PlayerTestWorld" type="Node2D"]
 script = ExtResource( 17 )
@@ -246,28 +191,6 @@ start = "right"
 position = Vector2( 560, 280 )
 
 [node name="UI" type="CanvasLayer" parent="."]
-
-[node name="Congrulations" type="Label" parent="UI"]
-visible = false
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -104.0
-rect_pivot_offset = Vector2( 512, 64 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = SubResource( 13 )
-text = "Congrulations"
-align = 1
-valign = 1
-script = ExtResource( 16 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Congrulations"]
-autoplay = "Wobble"
-anims/RESET = SubResource( 14 )
-anims/Wobble = SubResource( 15 )
 
 [node name="Label" parent="UI" instance=ExtResource( 5 )]
 visible = false
