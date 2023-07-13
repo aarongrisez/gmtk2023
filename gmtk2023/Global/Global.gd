@@ -63,6 +63,8 @@ func init_scene_map():
 var scene_map = init_scene_map()
 
 var rng = RandomNumberGenerator.new()
+
+# Initial world (change this to test your world of choice)
 var current_world = "res://World/World1.tscn"
 
 func reset_counters():
