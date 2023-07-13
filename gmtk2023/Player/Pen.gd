@@ -35,14 +35,14 @@ var movement_dir = Vector2(0, 0)
 var movement_speed = 200
 var movement_velocity = Vector2(0, 0)
 
-onready var scene = find_parent("World")
+onready var world = find_parent("World")
 
 func init_raycasts():
 	var raycasts = []
 
 	var i = 1
 	while i <= 8:
-		var raycast = scene.find_node("RayCast2D%d" % i)
+		var raycast = world.find_node("RayCast2D%d" % i)
 		raycasts.append(raycast)
 		i += 1
 		
@@ -60,12 +60,12 @@ func init_raycast_infos():
 onready var raycasts = init_raycasts()
 onready var raycast_infos = init_raycast_infos()
 
-onready var destination = scene.find_node("Destination")
+onready var destination = world.find_node("Destination")
 var catKinematicBody = null
-onready var tilemap = scene.find_node("WorldMap")
+onready var tilemap = world.find_node("WorldMap")
 
 func _ready():
-	catKinematicBody = scene.find_node("Cat").find_node("KinematicBody2D")
+	catKinematicBody = world.find_node("Cat").find_node("KinematicBody2D")
 	pass # Replace with function body.
 
 func render_raycast(raycast_render_info):
